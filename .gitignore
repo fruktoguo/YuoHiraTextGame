@@ -1,0 +1,4 @@
+*.csproj
+Library/
+Temp/
+Logs/
