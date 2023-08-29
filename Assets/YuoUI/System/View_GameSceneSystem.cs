@@ -13,9 +13,9 @@ namespace YuoTools.UI
 
         public void AddMapGridComponent(string name, YuoVector2 position, float size)
         {
-            var go = Object.Instantiate(Child_MapGrid.rectTransform.gameObject, Child_MapGrid.rectTransform.parent);
-            go.Show();
-            var mapItem = AddChild<View_MapGridComponent>(go.transform as RectTransform);
+            var mapItem = AddChildAndInstantiate(Child_MapGrid);
+            mapItem.Entity.EntityName = name;
+            mapItem.rectTransform.gameObject.name = name;
             mapItem.SetGridData(name, position, size);
         }
     }
@@ -29,7 +29,7 @@ namespace YuoTools.UI
             view.FindAll();
             for (int i = 0; i < 10; i++)
             {
-                view.AddMapGridComponent($"测试场景{i}", Random.insideUnitCircle * 1000, Random.Range(1, 5));
+                view.AddMapGridComponent($"测试场景{i}", Random.insideUnitCircle * 1000, Random.Range(1f, 5f));
             }
         }
     }

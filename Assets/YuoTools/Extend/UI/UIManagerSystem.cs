@@ -1,8 +1,6 @@
 using ET;
 using UnityEngine;
-using UnityEngine.UI;
 using YuoTools.Extend;
-using YuoTools.Extend.Helper;
 using YuoTools.Extend.UI;
 using YuoTools.Main.Ecs;
 
@@ -14,7 +12,7 @@ namespace YuoTools.UI
         {
             UIComponent component = GetUIView(winName) ?? await AddWindow(winName, go);
 
-            if(component == null) return null;
+            if (component == null) return null;
             if (!openItems.Contains(component))
             {
                 openItems.Add(component);
@@ -223,7 +221,8 @@ namespace YuoTools.UI
 
         private async ETTask<GameObject> Create(string winName)
         {
-            return (await YuoWorld.Main.GetBaseComponent<AssetsLoadComponent>().LoadPrefabAsync(LoadPath + winName)).Instantiate(Transform);
+            return (await YuoWorld.Main.GetBaseComponent<AssetsLoadComponent>().LoadPrefabAsync(LoadPath + winName))
+                .Instantiate(Transform);
         }
 
         private UIComponent _topView;
@@ -267,12 +266,13 @@ namespace YuoTools.UI
             rectTransform.SetSiblingIndex(layer);
         }
 
-        public T AddChild<T>(RectTransform rect) where T : UIComponent, new()
+        public T AddChildAndInstantiate<T>(T template) where T : UIComponent, new()
         {
+            var go = Object.Instantiate(template.rectTransform, template.rectTransform.parent);
             var child = Entity.AddChild<T>();
-            child.rectTransform = rect;
+            child.rectTransform = go.transform as RectTransform;
             child.RunSystem<IUICreate>();
-            child.Entity.EntityName = rect.name;
+            go.Show();
             return child;
         }
     }

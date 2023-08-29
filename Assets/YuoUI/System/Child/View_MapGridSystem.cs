@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using YuoTools.Extend.Helper;
 using YuoTools.Extend.YuoMathf;
@@ -8,6 +9,7 @@ namespace YuoTools.UI
 {
     public partial class View_MapGridComponent
     {
+        [ShowInInspector]
         public MapGridData GridData { get; private set; }
 
         public void SetGridData(string name, YuoVector2 position, float size)
