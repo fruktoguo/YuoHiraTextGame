@@ -1,13 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
-using YuoTools;
+using YuoTools.Main.Ecs;
 
-public class YuoTime
+public class YuoTime : YuoComponentInstance<YuoTime>
 {
     public double Time { get; private set; }
+    
+    public double TimeScale { get; private set; }
 
     public long Year => (long)(Time / 360);
     public long Month => (long)(Time % 360 / 30);
@@ -48,5 +46,13 @@ public class YuoTime
     public override string ToString()
     {
         return $"{Year}年/{Month}月/{Day}日/{Hour}时/{Minute}分";
+    }
+}
+
+public class YuoTimeUpdateSystem : YuoSystem<YuoTime>, IUpdate
+{
+    protected override void Run(YuoTime component)
+    {
+        component.AddTime(Time.deltaTime * component.TimeScale);
     }
 }

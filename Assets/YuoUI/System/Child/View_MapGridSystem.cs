@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System.Collections.Generic;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using YuoTools.Extend.Helper;
@@ -7,10 +8,9 @@ using YuoTools.Main.Ecs;
 
 namespace YuoTools.UI
 {
-    public partial class View_MapGridComponent
+    public partial class View_MapGridComponent : IDataView
     {
-        [ShowInInspector]
-        public MapGridData GridData { get; private set; }
+        [ShowInInspector] public MapGridData GridData { get; private set; }
 
         public void SetGridData(string name, YuoVector2 position, float size)
         {
@@ -18,7 +18,21 @@ namespace YuoTools.UI
             TextMeshProUGUI_GridText.text = name;
             rectTransform.sizeDelta = Vector2.one * size * 100;
             rectTransform.anchoredPosition = position;
+            Button_BG.SetUIOpen(ViewType.InfoPanel);
+            View_InfoPanelComponent.GetView().ShowInfo(this);
         }
+
+        public List<string> GetData()
+        {
+            var data = new List<string>();
+            data.Add($"名字:{GridData.Name}");
+            return data;
+        }
+    }
+
+    public interface IDataView
+    {
+        public List<string> GetData();
     }
 
     public class MapGridData

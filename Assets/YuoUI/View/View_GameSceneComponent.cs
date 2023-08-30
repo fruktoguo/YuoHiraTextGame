@@ -15,6 +15,9 @@ namespace YuoTools.UI
 	public partial class View_GameSceneComponent : UIComponent 
 	{
 
+		public static View_GameSceneComponent GetView() => UIManagerComponent.Get.GetUIView<View_GameSceneComponent>();
+
+
 		private View_MapGridComponent mChild_MapGrid;
 
 		public View_MapGridComponent Child_MapGrid

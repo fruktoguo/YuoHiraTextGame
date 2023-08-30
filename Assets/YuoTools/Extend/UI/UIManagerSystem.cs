@@ -167,7 +167,6 @@ namespace YuoTools.UI
             }
 
             if (component.rectTransform.gameObject.activeSelf) RunSystemAndChild<IUIClose>(component);
-            if (component.AutoHide) component.rectTransform.gameObject.Hide();
             if (component.ModuleUI && moduleUiItems.Contains(component)) moduleUiItems.Remove(component);
             if (openItems.Contains(component))
             {
@@ -182,6 +181,8 @@ namespace YuoTools.UI
                 await anima.Close();
                 YuoWorld.RunSystem<IUICloseAnima>(anima);
             }
+
+            if (component.AutoHide) component.rectTransform.gameObject.Hide();
         }
 
         public void CloseAll()

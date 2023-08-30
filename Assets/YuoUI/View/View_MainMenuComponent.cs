@@ -15,6 +15,9 @@ namespace YuoTools.UI
 	public partial class View_MainMenuComponent : UIComponent 
 	{
 
+		public static View_MainMenuComponent GetView() => UIManagerComponent.Get.GetUIView<View_MainMenuComponent>();
+
+
 		private Button mButton_开始游戏;
 
 		public Button Button_开始游戏

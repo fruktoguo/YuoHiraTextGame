@@ -18,6 +18,9 @@ namespace YuoTools.UI
             mapItem.rectTransform.gameObject.name = name;
             mapItem.SetGridData(name, position, size);
         }
+
+        public static void AddMapItem(string name, YuoVector2 position, float size) => UIManagerComponent.Get
+            .GetUIView<View_GameSceneComponent>().AddMapGridComponent(name, position, size);
     }
 
     public class View_GameSceneCreateSystem : YuoSystem<View_GameSceneComponent>, IUICreate

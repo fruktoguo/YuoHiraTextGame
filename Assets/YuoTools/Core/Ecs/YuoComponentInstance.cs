@@ -12,7 +12,7 @@ namespace YuoTools.Main.Ecs
         {
             get
             {
-                if (instanceEntity == null || instanceEntity.IsDisposed)
+                if (!(instanceEntity is { IsDisposed: false }))
                 {
                     instanceEntity = YuoWorld.Main;
                 }
@@ -42,16 +42,15 @@ namespace YuoTools.Main.Ecs
         {
             get
             {
+                if (instance is { IsDisposed: false }) return instance;
+
                 if (instanceEntity == null || instanceEntity.IsDisposed)
                 {
                     instanceEntity = YuoWorld.Main;
                 }
 
-                if (instance == null || instance.IsDisposed)
-                {
-                    instance = instanceEntity.GetOrAddComponent<T>();
-                }
-
+                instance = instanceEntity.GetOrAddComponent<T>();
+                
                 return instance;
             }
         }

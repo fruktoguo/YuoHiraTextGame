@@ -1,5 +1,6 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
+using YuoTools.Extend.UI;
 using YuoTools.Main.Ecs;
 using YuoTools.UI;
 
@@ -22,6 +23,18 @@ namespace YuoTools.Extend.Helper
         {
             btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(() => UIManagerComponent.Get.Close(windowName));
+        }
+
+        public static void SetUICloseWaitAnima(this Button btn, string windowName)
+        {
+            btn.onClick.RemoveAllListeners();
+            btn.onClick.AddListener(() =>
+            {
+                var view = UIManagerComponent.Get.GetUIView(windowName);
+                var viewAnima = view.GetComponent<UIAnimaComponent>();
+                if (viewAnima != null && viewAnima.Sate != UISetting.UISate.Show) return;
+                UIManagerComponent.Get.Close(windowName);
+            });
         }
 
         public static void AddUIOpen(this Button btn, string windowName)

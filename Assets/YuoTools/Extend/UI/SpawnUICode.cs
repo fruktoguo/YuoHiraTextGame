@@ -63,9 +63,14 @@ namespace YuoTools.Extend.UI
 
             final.AppendLine($"\tpublic partial class {strDlgName} : UIComponent \n\t{{");
 
+            final.AppendLine("");
+            final.AppendLine($"\t\tpublic static {strDlgName} GetView() => UIManagerComponent.Get.GetUIView<{strDlgName}>();");
+            final.AppendLine("");
+            
             final.Append(strBuilder);
 
             sw.Write(final.ToString());
+            
             sw.Close();
 
             SpawnSystemCode(UIName);
@@ -569,6 +574,7 @@ namespace YuoTools.Extend.UI
                     strBuilder.AppendLine(
                         $"\t\tprotected override void Run(View_{name}Component view, UIAnimaComponent anima)");
                     strBuilder.AppendLine($"\t\t{{");
+                    strBuilder.AppendLine("\t\t\tview.Button_Mask.image.SetColorA(0);\n");
                     strBuilder.AppendLine("\t\t\tview.Button_Mask.image.DOFade(0.6f, 0.2f);");
                     strBuilder.AppendLine("\t\t}");
                     strBuilder.AppendLine("\t}");
@@ -583,7 +589,7 @@ namespace YuoTools.Extend.UI
                     strBuilder.AppendLine(
                         $"\t\tprotected override void Run(View_{name}Component view, UIAnimaComponent anima)");
                     strBuilder.AppendLine("\t\t{");
-                    strBuilder.AppendLine("\t\t\tview.Button_Mask.image.DOFade(0.6f, 0.2f);");
+                    strBuilder.AppendLine("\t\t\tview.Button_Mask.image.DOFade(0f, 0.2f);");
                     strBuilder.AppendLine("\t\t}");
                     strBuilder.AppendLine("\t}");
                     break;
