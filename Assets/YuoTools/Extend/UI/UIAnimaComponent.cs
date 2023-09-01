@@ -1,5 +1,6 @@
 ﻿using DG.Tweening;
 using ET;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using YuoTools.Extend.UI;
 using YuoTools.Main.Ecs;
@@ -14,6 +15,8 @@ namespace YuoTools.UI
 
         public UISetting.UISate Sate;
 
+        public float AnimaDuration => animation != null ? animation.duration : 0;
+
         private DOTweenAnimation animation;
 
         public async ETTask Open()
@@ -23,7 +26,7 @@ namespace YuoTools.UI
                 animation.DOPlayForward();
 
                 Sate = UISetting.UISate.ShowAnima;
-                await YuoWait.WaitTimeAsync(animation.duration);
+                await YuoWait.WaitTimeAsync(AnimaDuration);
             }
 
             Sate = UISetting.UISate.Show;
@@ -36,7 +39,7 @@ namespace YuoTools.UI
                 animation.DOPlayBackwards();
 
                 Sate = UISetting.UISate.HideAnima;
-                await YuoWait.WaitTimeAsync(animation.duration);
+                await YuoWait.WaitTimeAsync(AnimaDuration);
             }
 
             Sate = UISetting.UISate.Hide;

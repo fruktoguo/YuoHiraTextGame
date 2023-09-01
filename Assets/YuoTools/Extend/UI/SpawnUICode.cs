@@ -575,7 +575,7 @@ namespace YuoTools.Extend.UI
                         $"\t\tprotected override void Run(View_{name}Component view, UIAnimaComponent anima)");
                     strBuilder.AppendLine($"\t\t{{");
                     strBuilder.AppendLine("\t\t\tview.Button_Mask.image.SetColorA(0);\n");
-                    strBuilder.AppendLine("\t\t\tview.Button_Mask.image.DOFade(0.6f, 0.2f);");
+                    strBuilder.AppendLine("\t\t\tview.Button_Mask.image.DOFade(0.6f, anima.AnimaDuration);");
                     strBuilder.AppendLine("\t\t}");
                     strBuilder.AppendLine("\t}");
 
@@ -589,7 +589,7 @@ namespace YuoTools.Extend.UI
                     strBuilder.AppendLine(
                         $"\t\tprotected override void Run(View_{name}Component view, UIAnimaComponent anima)");
                     strBuilder.AppendLine("\t\t{");
-                    strBuilder.AppendLine("\t\t\tview.Button_Mask.image.DOFade(0f, 0.2f);");
+                    strBuilder.AppendLine("\t\t\tview.Button_Mask.image.DOFade(0f, anima.AnimaDuration);");
                     strBuilder.AppendLine("\t\t}");
                     strBuilder.AppendLine("\t}");
                     break;

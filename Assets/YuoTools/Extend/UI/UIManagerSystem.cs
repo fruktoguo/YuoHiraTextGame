@@ -48,6 +48,8 @@ namespace YuoTools.UI
             return component;
         }
 
+        public async void OpenSync(string winName, GameObject go = null) => await Open(winName, go);
+
         public async ETTask<T> Open<T>() where T : UIComponent
         {
             if (uiItemsType.ContainsKey(typeof(T)))
@@ -129,7 +131,7 @@ namespace YuoTools.UI
                 component.Entity.AddComponent<UIAnimaComponent>().From(uiSetting);
                 component.ModuleUI = uiSetting.ModuleUI;
                 go.SetActive(uiSetting.Active);
-                //Object.Destroy(uiSetting);
+                Object.Destroy(uiSetting);
             }
 
             component.ViewName = winName;

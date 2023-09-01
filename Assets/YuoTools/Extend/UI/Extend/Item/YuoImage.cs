@@ -138,6 +138,7 @@ public class YuoImage : Image
     {
         vh.Clear();
         ComputeUV();
+        var rect = rectTransform.rect;
 
         //计算真实半径范围
         float realRadius;
@@ -147,7 +148,6 @@ public class YuoImage : Image
             realRadius = 0.5f * rectTransform.rect.width * mRadius;
         //确定四个边角圆形圆心的坐标
         //左下角圆心
-        var rect = rectTransform.rect;
         Vector2 leftBottomCenter = new Vector2(-0.5f * rect.width + realRadius,
             -0.5f * rect.height + realRadius);
         //左上角圆心
@@ -232,17 +232,6 @@ public class YuoImage : Image
         // triangleIdx += mTriangleCount + 2;
     }
 
-    public UIVertex[] GetRectangleQuad(params Vector2[] vertices)
-    {
-        UIVertex[] vs = new UIVertex[vertices.Length];
-        for (int i = 0; i < vs.Length; i++)
-        {
-            vs[i] = GetUIVertex(vertices[i]);
-        }
-
-        return vs;
-    }
-
     #endregion
 
     public bool ChangeUV;
@@ -261,16 +250,17 @@ public class YuoImage : Image
             float angle = RemapUVAngle * Mathf.Deg2Rad;
             float x = Mathf.Cos(angle) - Mathf.Sin(angle);
             float y = Mathf.Sin(angle) + Mathf.Cos(angle);
-            Debug.Log((new Vector2(x, y),new Vector2(x, y).normalized.magnitude) );
-            uv = (new Vector2(x, y).normalized) * RemapUVDistance;
+            // Debug.Log((new Vector2(x, y),new Vector2(x, y).normalized.magnitude) );
+            uv = (new Vector2(x , y).normalized) * RemapUVDistance;
         }
 
         UIVertex vertex = new UIVertex
         {
             color = color,
             position = point + mPivotVector,
-            uv0 = !ChangeUV || isCenter ? new Vector2(point.x * uvScaleX, point.y * uvScaleY) + mCenter :
-                !RemapUV ? Vector2.zero : uv
+            uv0 = !ChangeUV || isCenter
+                ? new Vector2(point.x * uvScaleX, point.y * uvScaleY) + mCenter
+                : !RemapUV ? Vector2.zero : uv
         };
         return vertex;
     }

@@ -44,16 +44,39 @@ namespace YuoTools.UI
 		}
 
 
+		private View_InfoItemComponent mChild_InfoItem;
+
+		public View_InfoItemComponent Child_InfoItem
+		{
+			get
+			{
+				if (mChild_InfoItem == null)
+				{
+					mChild_InfoItem = Entity.AddChild<View_InfoItemComponent>();
+					mChild_InfoItem.Entity.EntityName = "InfoItem";
+					mChild_InfoItem.rectTransform = rectTransform.Find("Item/BackGround/D_InfoItem") as RectTransform;
+					mChild_InfoItem.RunSystem<IUICreate>();
+				}
+				return mChild_InfoItem;
+			}
+		}
+
 
 		[FoldoutGroup("ALL")]
 
 		public List<Button> all_Button = new();
+
+		[FoldoutGroup("ALL")]
+
+		public List<View_InfoItemComponent> all_View_InfoItemComponent = new();
 
 		public void FindAll()
 		{
 				
 			all_Button.Add(Button_Mask);
 			all_Button.Add(Button_Close);;
+				
+			all_View_InfoItemComponent.Add(Child_InfoItem);;
 
 
 		}

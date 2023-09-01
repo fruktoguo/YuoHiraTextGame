@@ -19,13 +19,19 @@ namespace YuoTools.UI
             rectTransform.sizeDelta = Vector2.one * size * 100;
             rectTransform.anchoredPosition = position;
             Button_BG.SetUIOpen(ViewType.InfoPanel);
-            View_InfoPanelComponent.GetView().ShowInfo(this);
+            Button_BG.SetBtnClick(() => View_InfoPanelComponent.GetView().ShowInfo(this));
         }
 
         public List<string> GetData()
         {
             var data = new List<string>();
-            data.Add($"名字:{GridData.Name}");
+            data.AddRange(new List<string>()
+            {
+                $"名字:{GridData.Name}",
+                $"大小:{GridData.Size * 100:F0}",
+                $"位置:({GridData.Position.x:F2},{GridData.Position.y:F2})",
+            });
+
             return data;
         }
     }

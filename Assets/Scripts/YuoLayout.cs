@@ -12,6 +12,11 @@ public class YuoLayout : UIBehaviour, ILayoutElement, ILayoutGroup
 
     public Vector2 Spacing;
 
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        SetLayoutVertical();
+    }
 
     [System.NonSerialized] private RectTransform m_Rect;
 
@@ -184,11 +189,11 @@ public class YuoLayout : UIBehaviour, ILayoutElement, ILayoutGroup
         ListPool<Component>.Release(toIgnoreList);
     }
 
-    public float minWidth { get; }
-    public float preferredWidth { get; }
-    public float flexibleWidth { get; }
-    public float minHeight { get; }
-    public float preferredHeight { get; }
-    public float flexibleHeight { get; }
+    public float minWidth => rectTransform.rect.width;
+    public float preferredWidth=> rectTransform.rect.width;
+    public float flexibleWidth => rectTransform.rect.width;
+    public float minHeight => rectTransform.rect.height;
+    public float preferredHeight => rectTransform.rect.height;
+    public float flexibleHeight => rectTransform.rect.height;
     public int layoutPriority { get; }
 }

@@ -94,7 +94,7 @@ namespace YuoTools.Chat
             image.sprite = mData.image;
             image.gameObject.SetActive(image.sprite);
             Head.sprite = mData.user.Head;
-#if UNITY_2022_3_OR_NEWER
+#if UNITY_2021_3_OR_NEWER
             Message.enableWordWrapping = true;
 #else
             Message.textWrappingMode = TextWrappingModes.Normal;
