@@ -43,7 +43,7 @@ namespace YuoTools.Extend.Ai.AIGC
             return null;
         }
 
-        public static async Task<Texture2D> Draw(string parameters,string negative_prompt = "") =>
+        public static async Task<Texture2D> Draw(string parameters, string negative_prompt = "") =>
             await Draw(new Text2ImgRequestDto
             {
                 prompt = parameters,
@@ -96,6 +96,7 @@ namespace YuoTools.Extend.Ai.AIGC
         /// </summary>
         public string sampler_index { get; set; } = "Euler a";
 
+#nullable enable
         /// <summary>
         /// 随机种子数，默认为-1
         /// </summary>
@@ -113,6 +114,7 @@ namespace YuoTools.Extend.Ai.AIGC
         public bool? tiling { get; set; } = false;
 
         public double? cfg_scale { get; set; } = 7;
+#nullable restore
     }
 
     /// <summary>
@@ -129,10 +131,11 @@ namespace YuoTools.Extend.Ai.AIGC
         /// request请求中的body
         /// </summary>
         public Text2ImgRequestDto parameters = new Text2ImgRequestDto();
-
+#nullable enable
         /// <summary>
         /// 返回的图片数组生成参数信息
         /// </summary>
         public string? info { get; set; }
+#nullable restore
     }
 }

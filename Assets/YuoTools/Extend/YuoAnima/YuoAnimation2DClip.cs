@@ -74,7 +74,7 @@ namespace YuoAnima
             UnityEditor.AssetDatabase.Refresh();
         }
 
-        [SerializeField] [HideLabel] [PreviewField(height: 300, ObjectFieldAlignment.Center)] [ReadOnly]
+        [SerializeField] [HideLabel] [PreviewField(300, ObjectFieldAlignment.Center)] [ReadOnly]
         private Sprite preview;
 
         [HorizontalGroup("Preview")]
@@ -99,9 +99,8 @@ namespace YuoAnima
 
         [HorizontalGroup("PreviewCon")] [SerializeField]
         private int nowFrame = 0;
-        
-        [ShowInInspector]
-        private float NowProgress => nowFrame / (float)frames.Count;
+
+        [ShowInInspector] private float NowProgress => nowFrame / (float)frames.Count;
 
         [Button]
         [HorizontalGroup("PreviewCon")]

@@ -336,19 +336,21 @@ namespace YuoTools.Editor.Ecs
 
         public class ComponentView
         {
-            [ReadOnly] [HorizontalGroup("info", 300, LabelWidth = 100)]
-            [GUIColor(0.8f, 0.5f, 0.3f)]
+            [ReadOnly] [HorizontalGroup("info", 300, LabelWidth = 100)] [GUIColor(0.8f, 0.5f, 0.3f)]
             public long EntityID;
 
             [ShowInInspector]
-            [HorizontalGroup("info", 200, LabelWidth = 100)][GUIColor(0.8f, 0.5f, 0.3f)]
+            [HorizontalGroup("info", 200, LabelWidth = 100)]
+            [GUIColor(0.8f, 0.5f, 0.3f)]
             public int ChildCount => Entity.Children.Count;
 
             [ShowInInspector]
-            [HorizontalGroup("info", 200, LabelWidth = 150)][GUIColor(0.8f, 0.5f, 0.3f)]
+            [HorizontalGroup("info", 200, LabelWidth = 150)]
+            [GUIColor(0.8f, 0.5f, 0.3f)]
             public int ComponentCount => Components.Count;
 
-            [ListDrawerSettings(ShowFoldout = true, HideAddButton = true, HideRemoveButton = true, DraggableItems = false,
+            [ListDrawerSettings(ShowFoldout = true, HideAddButton = true, HideRemoveButton = true,
+                DraggableItems = false,
                 NumberOfItemsPerPage = 99,
                 ShowItemCount = false, ListElementLabelName = "@Name",
                 ElementColor = "ElementColor")]
@@ -358,13 +360,20 @@ namespace YuoTools.Editor.Ecs
 
             [HideInInspector] public YuoEntity Entity;
 
+            [OnInspectorGUI]
             public void OnSelect()
             {
-                if (Entity.TryGetComponent<EntitySelectComponent>(out var select))
+                if (Selection.activeGameObject != _gameObject)
                 {
-                    Selection.activeGameObject = select.SelectGameObject;
+                    if (Entity.TryGetComponent<EntitySelectComponent>(out var select))
+                    {
+                        Selection.activeGameObject = select.SelectGameObject;
+                        _gameObject = select.SelectGameObject;
+                    }
                 }
             }
+
+            private GameObject _gameObject;
 
             private Color ElementColor(int index)
             {
@@ -384,6 +393,11 @@ namespace YuoTools.Editor.Ecs
                 _count = Components.Count;
                 if (Entity == null) return;
                 Components.Clear();
+                if (Entity.TryGetComponent<EntitySelectComponent>(out var select))
+                {
+                    _gameObject = select.SelectGameObject;
+                }
+
                 foreach (var component in Entity.Components.Values)
                 {
                     if (!Components.Contains(component))
@@ -397,7 +411,8 @@ namespace YuoTools.Editor.Ecs
         public class SystemView
         {
             [HorizontalGroup()]
-            [ListDrawerSettings(ShowFoldout = true, HideAddButton = true, HideRemoveButton = true, DraggableItems = false,
+            [ListDrawerSettings(ShowFoldout = true, HideAddButton = true, HideRemoveButton = true,
+                DraggableItems = false,
                 ShowItemCount = false)]
             [ShowInInspector]
             [ReadOnly]
@@ -405,7 +420,8 @@ namespace YuoTools.Editor.Ecs
             public List<string> InfluenceType = new();
 
             [HorizontalGroup()]
-            [ListDrawerSettings(ShowFoldout = true, HideAddButton = true, HideRemoveButton = true, DraggableItems = false,
+            [ListDrawerSettings(ShowFoldout = true, HideAddButton = true, HideRemoveButton = true,
+                DraggableItems = false,
                 ShowItemCount = false)]
             [ShowInInspector]
             [ReadOnly]
@@ -442,7 +458,8 @@ namespace YuoTools.Editor.Ecs
             public SystemBase System;
             public List<YuoEntity> Entities = new();
 
-            [ListDrawerSettings(ShowFoldout = true, HideAddButton = true, HideRemoveButton = true, DraggableItems = false,
+            [ListDrawerSettings(ShowFoldout = true, HideAddButton = true, HideRemoveButton = true,
+                DraggableItems = false,
                 ShowItemCount = false)]
             [ShowInInspector]
             [ReadOnly]

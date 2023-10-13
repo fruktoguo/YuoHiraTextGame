@@ -790,6 +790,7 @@ namespace YuoTools.Extend.Helper
             FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read);
             BinaryReader br = new BinaryReader(fs);
             Byte[] buffer = br.ReadBytes(2);
+            if (buffer.Length < 2) return Encoding.UTF8;
             if (buffer[0] >= 0xEF)
             {
                 //UTF-8

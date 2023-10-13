@@ -34,7 +34,7 @@ namespace YuoTools
         /// <summary>
         /// 单元格渲染器prefab
         /// </summary>
-        [Header("预设体必须挂载YuoLoopListItem组件")] public GameObject RenderGO;
+        [Header("预设体必须挂载YuoLoopListItem组件")] public YuoLoopListItem<T> RenderGO;
 
         /// <summary>
         /// 渲染格子数
@@ -102,7 +102,7 @@ namespace YuoTools
             mList_items = new List<YuoLoopListItem<T>>();
             for (int i = 0; i < mRendererCount; ++i)
             {
-                GameObject child = GameObject.Instantiate(RenderGO, mScrollRect.content, true);
+                GameObject child = GameObject.Instantiate(RenderGO.gameObject, mScrollRect.content, true);
                 child.name = $"{RenderGO.name}_{i}";
                 child.transform.localRotation = Quaternion.identity;
                 child.transform.localScale = Vector3.one;
@@ -389,7 +389,7 @@ namespace YuoTools
             mList_items.Clear();
             for (int i = 0; i < mRendererCount; ++i)
             {
-                GameObject child = Instantiate(RenderGO);
+                GameObject child = Instantiate(RenderGO.gameObject);
                 child.transform.SetParent(transform);
                 child.transform.localRotation = Quaternion.identity;
                 child.transform.localScale = Vector3.one;

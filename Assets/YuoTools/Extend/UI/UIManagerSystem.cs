@@ -19,23 +19,6 @@ namespace YuoTools.UI
                 component.AddComponent<UIActiveComponent>();
             }
 
-            if (component.AutoShow) component.rectTransform.gameObject.Show();
-
-            if (component.ModuleUI)
-            {
-                if (!moduleUiItems.Contains(component))
-                {
-                    moduleUiItems.Add(component);
-                    component.AddComponent<TopViewComponent>();
-                }
-
-                component.rectTransform.SetAsLastSibling();
-            }
-            else
-            {
-                component.SetWindowLayer(Transform.childCount - 1 - moduleUiItems.Count);
-            }
-
             if (!component.ModuleUI) TopView = component;
             RunSystemAndChild<IUIOpen>(component);
 
@@ -46,6 +29,24 @@ namespace YuoTools.UI
             }
 
             return component;
+        }
+
+        public static void ResetWindowLayer(UIComponent component)
+        {
+            if (component.ModuleUI)
+            {
+                if (!Get.moduleUiItems.Contains(component))
+                {
+                    Get.moduleUiItems.Add(component);
+                    component.AddComponent<TopViewComponent>();
+                }
+
+                component.rectTransform.SetAsLastSibling();
+            }
+            else
+            {
+                component.SetWindowLayer(Get.Transform.childCount - 1 - Get.moduleUiItems.Count);
+            }
         }
 
         public async void OpenSync(string winName, GameObject go = null) => await Open(winName, go);
@@ -306,8 +307,9 @@ namespace YuoTools.UI
 
         protected override void Run(UIComponent component, TopViewComponent topViewComponent)
         {
-            component.SetWindowLayer(YuoWorld.Main.GetComponent<UIManagerComponent>().WindowCount);
-            component.rectTransform.gameObject.Show();
+            // component.SetWindowLayer(YuoWorld.Main.GetComponent<UIManagerComponent>().WindowCount);
+            UIManagerComponent.ResetWindowLayer(component);
+            if (component.AutoShow) component.rectTransform.Show();
         }
     }
 

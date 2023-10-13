@@ -75,34 +75,22 @@ namespace YuoTools
             return color;
         }
 
-        public static Color SetAlpha(this ref Color color, float a)
-        {
-            color.a = a;
-            return color;
-        }
-
-        public static Color SetColorAlpha(this SpriteRenderer sprite, float alpha)
-        {
-            sprite.color = Temp.color.SetAlpha(alpha);
-            return sprite.color;
-        }
-
-        public static void SetColorR(this Image image, float r)
+        public static void SetColorR(this Graphic image, float r)
         {
             image.color = image.color.RSetR(r);
         }
 
-        public static void SetColorG(this Image image, float g)
+        public static void SetColorG(this Graphic image, float g)
         {
             image.color = image.color.RSetG(g);
         }
 
-        public static void SetColorB(this Image image, float b)
+        public static void SetColorB(this Graphic image, float b)
         {
             image.color = image.color.RSetB(b);
         }
 
-        public static void SetColorA(this Image image, float a)
+        public static void SetColorA(this Graphic image, float a)
         {
             image.color = image.color.RSetA(a);
         }
@@ -125,46 +113,6 @@ namespace YuoTools
         public static void SetColorA(this SpriteRenderer renderer, float a)
         {
             renderer.color = renderer.color.RSetA(a);
-        }
-
-        public static void SetColorR(this Text text, float r)
-        {
-            text.color = text.color.RSetR(r);
-        }
-
-        public static void SetColorG(this Text text, float g)
-        {
-            text.color = text.color.RSetG(g);
-        }
-
-        public static void SetColorB(this Text text, float b)
-        {
-            text.color = text.color.RSetB(b);
-        }
-
-        public static void SetColorA(this Text text, float a)
-        {
-            text.color = text.color.RSetA(a);
-        }
-
-        public static void SetColorR(this TextMeshProUGUI text, float r)
-        {
-            text.color = text.color.RSetR(r);
-        }
-
-        public static void SetColorG(this TextMeshProUGUI text, float g)
-        {
-            text.color = text.color.RSetG(g);
-        }
-
-        public static void SetColorB(this TextMeshProUGUI text, float b)
-        {
-            text.color = text.color.RSetB(b);
-        }
-
-        public static void SetColorA(this TextMeshProUGUI text, float a)
-        {
-            text.color = text.color.RSetA(a);
         }
 
         #endregion Color

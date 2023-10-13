@@ -251,7 +251,7 @@ public class YuoImage : Image
             float x = Mathf.Cos(angle) - Mathf.Sin(angle);
             float y = Mathf.Sin(angle) + Mathf.Cos(angle);
             // Debug.Log((new Vector2(x, y),new Vector2(x, y).normalized.magnitude) );
-            uv = (new Vector2(x , y).normalized) * RemapUVDistance;
+            uv = (new Vector2(x, y).normalized) * RemapUVDistance;
         }
 
         UIVertex vertex = new UIVertex
@@ -260,7 +260,9 @@ public class YuoImage : Image
             position = point + mPivotVector,
             uv0 = !ChangeUV || isCenter
                 ? new Vector2(point.x * uvScaleX, point.y * uvScaleY) + mCenter
-                : !RemapUV ? Vector2.zero : uv
+                : !RemapUV
+                    ? Vector2.zero
+                    : uv
         };
         return vertex;
     }
@@ -277,6 +279,48 @@ public class YuoImage : Image
         uvScaleX = (mUv.z - mUv.x) / tw;
         uvScaleY = (mUv.w - mUv.y) / th;
     }
+
+
+    // public override bool IsRaycastLocationValid(Vector2 screenPoint, Camera eventCamera)
+    // {
+    //     if (alphaHitTestMinimumThreshold <= 0)
+    //         return true;
+    //
+    //     if (alphaHitTestMinimumThreshold > 1)
+    //         return false;
+    //
+    //     if (sprite == null)
+    //         return true;
+    //
+    //     Vector2 local;
+    //     if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, screenPoint, eventCamera, out local))
+    //         return false;
+    //
+    //     Rect rect = GetPixelAdjustedRect();
+    //
+    //     if (m_PreserveAspect)
+    //         PreserveSpriteAspectRatio(ref rect, new Vector2(activeSprite.texture.width, activeSprite.texture.height));
+    //
+    //     // Convert to have lower left corner as reference point.
+    //     local.x += rectTransform.pivot.x * rect.width;
+    //     local.y += rectTransform.pivot.y * rect.height;
+    //
+    //     local = MapCoordinate(local, rect);
+    //
+    //     // Convert local coordinates to texture space.
+    //     float x = local.x / activeSprite.texture.width;
+    //     float y = local.y / activeSprite.texture.height;
+    //
+    //     try
+    //     {
+    //         return activeSprite.texture.GetPixelBilinear(x, y).a >= alphaHitTestMinimumThreshold;
+    //     }
+    //     catch (UnityException e)
+    //     {
+    //         Debug.LogError("Using alphaHitTestMinimumThreshold greater than 0 on Image whose sprite texture cannot be read. " + e.Message + " Also make sure to disable sprite packing for this sprite.", this);
+    //         return true;
+    //     }
+    // }
 
     float uvScaleX;
     float uvScaleY;

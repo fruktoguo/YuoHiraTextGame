@@ -12,12 +12,6 @@ public class YuoLayout : UIBehaviour, ILayoutElement, ILayoutGroup
 
     public Vector2 Spacing;
 
-    protected override void OnValidate()
-    {
-        base.OnValidate();
-        SetLayoutVertical();
-    }
-
     [System.NonSerialized] private RectTransform m_Rect;
 
     protected RectTransform rectTransform
@@ -190,7 +184,7 @@ public class YuoLayout : UIBehaviour, ILayoutElement, ILayoutGroup
     }
 
     public float minWidth => rectTransform.rect.width;
-    public float preferredWidth=> rectTransform.rect.width;
+    public float preferredWidth => rectTransform.rect.width;
     public float flexibleWidth => rectTransform.rect.width;
     public float minHeight => rectTransform.rect.height;
     public float preferredHeight => rectTransform.rect.height;

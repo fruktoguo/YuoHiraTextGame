@@ -4,12 +4,14 @@ namespace YuoTools.Main.Ecs
 {
     public partial class YuoComponent : IDisposable
     {
-        [Newtonsoft.Json.JsonIgnore] public YuoEntity Entity { get; set; }
-        [Newtonsoft.Json.JsonIgnore] public virtual string Name => Type.Name;
+        [Newtonsoft.Json.JsonIgnore] 
+        public YuoEntity Entity { get; set; }
+        
+        [Newtonsoft.Json.JsonIgnore] 
+        public virtual string Name => Type.Name;
 
         public Type BaseComponentType { get; internal set; } = null;
 
-        // [Sirenix.OdinInspector.ShowInInspector]
         public bool IsDisposed { get; internal set; }
 
         public YuoComponent()

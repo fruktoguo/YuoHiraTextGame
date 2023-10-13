@@ -49,7 +49,9 @@ namespace YuoTools.Main.Ecs
             GUIUtility.systemCopyBuffer = Type.Name;
         }
 
-        [ShowInInspector] [HorizontalGroup("SelectField", width: 50)] [HideLabel]
+        private bool _isPlaying => Application.isPlaying;
+
+        [ShowInInspector] [HorizontalGroup("SelectField", width: 50)] [HideLabel] [ShowIf("_isPlaying")]
         private bool _privateSelect;
 
         [ShowInInspector] [HorizontalGroup("SelectField")] [HideLabel] [HideIf("_privateSelect")] [ReadOnly]
@@ -59,6 +61,21 @@ namespace YuoTools.Main.Ecs
         [ShowInInspector]
         [LabelText("父组件类型")]
         private string ShowBase => BaseComponentType?.Name;
+
+        [HorizontalGroup("SelectField")]
+        [Button(ButtonSizes.Medium)]
+        [ShowIf("_privateSelect")]
+        private void SavePrefab()
+        {
+            var path = EditorUtility.OpenFolderPanel("选择保存路径", Application.dataPath, "").Log();
+            path = $"{path}/{Type.Name}_Prefab.asset";
+            path = AssetDatabase.GenerateUniqueAssetPath(path);
+            if (string.IsNullOrEmpty(path)) return;
+            var data = YuoComponentPrefabData.Create(this);
+            AssetDatabase.CreateAsset(data, path.Log());
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
     }
 }
 #endif

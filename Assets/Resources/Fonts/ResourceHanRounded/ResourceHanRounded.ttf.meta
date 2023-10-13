@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Resource Han Rounded CN
+  - ResourceHanRounded
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

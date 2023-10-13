@@ -35,12 +35,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI/将Text改成TMP", false, -2)]
     public static void ChangeTextToTMP()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
         foreach (var text in EditorTools.GetAllSelectComponent<Text>(true))
         {
             var go = text.gameObject;
@@ -53,12 +48,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI/将TMP改成Text", false, -2)]
     public static void ChangeTMPToText()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
         foreach (var text in EditorTools.GetAllSelectComponent<TextMeshProUGUI>(true))
         {
             var go = text.gameObject;
@@ -82,12 +72,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI命名/将UI的名字改成文本", false, -2)]
     public static void ChangeNameForText()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
         var texts = EditorTools.GetAllSelectComponent<Text>(true);
         var tmps = EditorTools.GetAllSelectComponent<TextMeshProUGUI>(true);
         var all = new List<Object>();
@@ -106,6 +91,17 @@ public class SpawnUICodeEditor
     }
 
     private static long _lastTime = long.MinValue;
+
+    private static bool SingleCheck()
+    {
+        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
+        {
+            return false;
+        }
+
+        _lastTime = DateTime.Now.Ticks / 10000000;
+        return true;
+    }
 
     static void ChangeUITag(string thisTag, Object go)
     {
@@ -133,12 +129,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI命名/切换是否被框架检索_C", false, -2)]
     public static void ChangeNameForFrame()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
 
         Object[] selections = Selection.objects;
         Undo.SetCurrentGroupName($"切换是否被框架检索_C [数量:{selections.Length}]");
@@ -154,12 +145,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI命名/切换是否为变体的组件_CV", false, -2)]
     public static void ChangeNameForFrameVariant()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
         Object[] selections = Selection.objects;
         Undo.SetCurrentGroupName($"切换是否为变体的组件_CV [数量:{selections.Length}]");
         Undo.RecordObjects(selections, "切换是否为变体的组件_CV");
@@ -174,12 +160,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI命名/切换UI子面板_D", false, -2)]
     public static void ChangeNameForChild()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
         foreach (var go in Selection.gameObjects)
         {
             ChangeUITag(SpawnUICodeConfig.ChildUITag, go);
@@ -189,12 +170,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI命名/切换UI子面板变体_DV", false, -2)]
     public static void ChangeNameForChildVariant()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
         foreach (var go in Selection.gameObjects)
         {
             ChangeUITag(SpawnUICodeConfig.VariantChildUITag, go);
@@ -204,12 +180,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI命名/切换公共UI_G", false, -2)]
     public static void ChangeNameForG()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
         foreach (var go in Selection.gameObjects)
         {
             ChangeUITag(SpawnUICodeConfig.GeneralUITag, go);
@@ -219,12 +190,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI命名/移除空格", false, -2)]
     public static void ChangeNameRemoveSpace()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
         foreach (var go in Selection.gameObjects)
         {
             go.name = go.name.Replace(" ", "");
@@ -234,12 +200,7 @@ public class SpawnUICodeEditor
     [MenuItem("GameObject/YuoUI命名/正则批量修改", false, -2)]
     public static void ChangeNameRegular()
     {
-        if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
-        {
-            return;
-        }
-
-        _lastTime = System.DateTime.Now.Ticks / 10000000;
+        if (!SingleCheck()) return;
 
         RegularRenameObjectsWindow.ShowWindow();
     }

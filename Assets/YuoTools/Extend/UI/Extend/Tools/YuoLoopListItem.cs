@@ -54,6 +54,7 @@ namespace YuoTools
         }
     }
 
+    [System.Serializable]
     public abstract class YuoLoopListItem<T> : MonoBehaviour
     {
         public delegate void OnSelect(YuoLoopListItem<T> item);

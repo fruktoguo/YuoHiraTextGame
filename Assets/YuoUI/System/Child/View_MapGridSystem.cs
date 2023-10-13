@@ -14,7 +14,10 @@ namespace YuoTools.UI
 
         public void SetGridData(string name, YuoVector2 position, float size)
         {
-            GridData = new MapGridData { Name = name, Position = position, Size = size };
+            GridData = AddComponent<MapGridData>();
+            GridData.Name = name;
+            GridData.Position = position;
+            GridData.Size = size;             
             TextMeshProUGUI_GridText.text = name;
             rectTransform.sizeDelta = Vector2.one * size * 100;
             rectTransform.anchoredPosition = position;
@@ -41,7 +44,7 @@ namespace YuoTools.UI
         public List<string> GetData();
     }
 
-    public class MapGridData
+    public class MapGridData : YuoComponent
     {
         public string Name = "未知地点";
         public YuoVector2 Position;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace YuoTools.Chat
 {
     /// <summary>
-    /// сисзй╧сцак╥╨пм,кЫрт╠ьпКр╙╪лЁпр╩об╡едэ╧рть
+    /// Г■╠Д╨▌Д╫©Г■╗Д╨├ФЁ⌡Е·▀,Ф┴─Д╩╔Е©┘И║╩Х╕│Г╩╖Ф┴©Д╦─Д╦▀Ф┴█Х┐╫Ф▄┌Х╫╫
     /// </summary>
     public class YuoChatLoopList : YuoLoopList<MessageData>
     {

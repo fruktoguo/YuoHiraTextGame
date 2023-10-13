@@ -11,7 +11,7 @@ namespace YuoTools.YuoEditor
     [Obsolete("Obsolete")]
     public class EditorTools : UnityEditor.Editor
     {
-        [MenuItem("GameObject/YuoUI_通用工具/精灵切换UI", false, -3)]
+        [MenuItem("GameObject/YuoTool通用工具/精灵切换UI", false, -3)]
         public static void SwitchToUI()
         {
             GameObject[] selectObjs = Selection.gameObjects;
@@ -27,7 +27,7 @@ namespace YuoTools.YuoEditor
             }
         }
 
-        [MenuItem("GameObject/YuoUI_通用工具/获取文件路径", false, -3)]
+        [MenuItem("GameObject/YuoTool通用工具/获取文件路径", false, -3)]
         public static void GetFilePath()
         {
             foreach (var item in Selection.assetGUIDs)
@@ -102,7 +102,7 @@ namespace YuoTools.YuoEditor
             }
         }
 
-        [MenuItem("GameObject/YuoUI_通用工具/切换选中/图片为精灵", false, -3)]
+        [MenuItem("GameObject/YuoTool通用工具/切换选中/图片为精灵", false, -3)]
         private static void EditTexture()
         {
             Object[] selects;
@@ -136,7 +136,7 @@ namespace YuoTools.YuoEditor
             }
         }
 
-        [MenuItem("GameObject/YuoUI_通用工具/切换物体显隐状态 &q", false, -3)]
+        [MenuItem("GameObject/YuoTool通用工具/切换物体显隐状态 &q", false, -3)]
         public static void SetObjActive()
         {
             GameObject[] selectObjs = Selection.gameObjects;
@@ -217,6 +217,45 @@ namespace YuoTools.YuoEditor
                 AssetDatabase.RenameAsset(selectionPath, newName);
                 AssetDatabase.Refresh();
             }
+        }
+
+        [MenuItem("GameObject/YuoTool通用工具/让物体可以被快速查找", false, -3)]
+        public static void AddToGameObjectFind()
+        {
+            if (!SingleCheck()) return;
+            var find = FindObjectOfType<GameSceneObjectFind>();
+            if (find == null)
+            {
+                var obj = GameObject.Find("GameSceneObjectFind");
+                if (obj == null)
+                {
+                    obj = new GameObject("GameSceneObjectFind");
+                    obj.AddComponent<GameSceneObjectFind>();
+                }
+
+                find = obj.GetComponent<GameSceneObjectFind>();
+            }
+
+            foreach (var o in Selection.gameObjects)
+            {
+                if (!find.GameObjects.Contains(o))
+                {
+                    find.GameObjects.Add(o);
+                }
+            }
+        }
+
+        private static long _lastTime = long.MinValue;
+
+        private static bool SingleCheck()
+        {
+            if (_lastTime.Equals(System.DateTime.Now.Ticks / 10000000))
+            {
+                return false;
+            }
+
+            _lastTime = DateTime.Now.Ticks / 10000000;
+            return true;
         }
     }
 }

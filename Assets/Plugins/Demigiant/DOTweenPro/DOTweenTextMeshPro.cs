@@ -235,7 +235,7 @@ namespace DG.Tweening
             _targetToAnimator.Add(target, this);
             Refresh();
             // Listeners
-            UnityEngine.TextCore.Text.TextEventManager.TEXT_CHANGED_EVENT.Add(OnTextChanged);
+            TMPro_EventManager.TEXT_CHANGED_EVENT.Add(OnTextChanged);
         }
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace DG.Tweening
             _charTransforms.Clear();
             textInfo = null;
             _cachedMeshInfos = null;
-            UnityEngine.TextCore.Text.TextEventManager.TEXT_CHANGED_EVENT.Remove(OnTextChanged);
+            TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(OnTextChanged);
         }
 
         /// <summary>

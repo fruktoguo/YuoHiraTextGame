@@ -361,8 +361,8 @@ namespace YuoTools.Editor
 
         string FileSizeToString(long size)
         {
-            string result = "";
-            if (size <= 0) return "未知大小";
+            string result = "0";
+            if (size <= 0) return "0";
             if (size < 1024)
             {
                 result = size + "B";

@@ -5,9 +5,9 @@ using YuoTools.Main.Ecs;
 namespace YuoTools.Extend
 {
     [DefaultExecutionOrder(int.MinValue)]
-    public class WorldMono : SerializedMonoBehaviour
+    public sealed class WorldMono : SerializedMonoBehaviour
     {
-        public YuoWorld yuoWorld;
+        public YuoWorld World;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void WorldInitBeforeSceneLoad()
@@ -15,30 +15,30 @@ namespace YuoTools.Extend
             if(YuoWorld.Instance != null)
                 return;
             var worldMono = new GameObject("World").AddComponent<WorldMono>();
-            worldMono.yuoWorld = new YuoWorld();
-            worldMono.yuoWorld.OnInit();
+            worldMono.World = new YuoWorld();
+            worldMono.World.OnInit();
             DontDestroyOnLoad(worldMono);
         }
 
         private void OnDestroy()
         {
-            if (YuoWorld.Instance == yuoWorld)
-                yuoWorld.OnDestroy();
+            if (YuoWorld.Instance == World)
+                World.OnDestroy();
         }
 
         private void Update()
         {
-            yuoWorld.Update();
+            World.Update();
         }
 
         private void FixedUpdate()
         {
-            yuoWorld.FixedUpdate();
+            World.FixedUpdate();
         }
         
         private void LateUpdate()
         {
-            yuoWorld.LateUpdate();
+            World.LateUpdate();
         }
     }
 }
