@@ -1,0 +1,151 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cced3c73b0d25e4c9475b73c46e09eb, type: 3}
+  m_Name: YuoComponentPrefabData
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: ComponentType
+      Entry: 6
+      Data: 
+    - Name: Component
+      Entry: 7
+      Data: 0|YuoTools.UI.View_InfoPanelComponent, Assembly-CSharp
+    - Name: rectTransform
+      Entry: 10
+      Data: 0
+    - Name: ViewName
+      Entry: 1
+      Data: InfoPanel
+    - Name: Layer
+      Entry: 3
+      Data: 0
+    - Name: ModuleUI
+      Entry: 5
+      Data: false
+    - Name: AutoShow
+      Entry: 5
+      Data: true
+    - Name: AutoHide
+      Entry: 5
+      Data: true
+    - Name: Pool
+      Entry: 7
+      Data: 1|YuoTools.Extend.OtherTools.YuoObjectPool`1[[YuoTools.UI.View_InfoItemComponent,
+        Assembly-CSharp]], Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: all_Button
+      Entry: 7
+      Data: 2|System.Collections.Generic.List`1[[UnityEngine.UI.Button, UnityEngine.UI]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: all_View_InfoItemComponent
+      Entry: 7
+      Data: 3|System.Collections.Generic.List`1[[YuoTools.UI.View_InfoItemComponent,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 4|YuoTools.UI.View_InfoItemComponent, Assembly-CSharp
+    - Name: rectTransform
+      Entry: 10
+      Data: 3
+    - Name: ViewName
+      Entry: 6
+      Data: 
+    - Name: Layer
+      Entry: 3
+      Data: 0
+    - Name: ModuleUI
+      Entry: 5
+      Data: false
+    - Name: AutoShow
+      Entry: 5
+      Data: true
+    - Name: AutoHide
+      Entry: 5
+      Data: true
+    - Name: all_Image
+      Entry: 7
+      Data: 5|System.Collections.Generic.List`1[[UnityEngine.UI.Image, UnityEngine.UI]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: all_TextMeshProUGUI
+      Entry: 7
+      Data: 6|System.Collections.Generic.List`1[[TMPro.TextMeshProUGUI, Unity.TextMeshPro]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
