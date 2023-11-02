@@ -1,100 +1,98 @@
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
-using YuoTools.Extend.Helper;
 
 namespace YuoTools.Extend.UI.LoopList
 {
     public class YuoLoopList : MonoBehaviour
     {
         /// <summary>
-        /// µ¥Ôª¸ñ³ß´ç£¨¿í£¬¸ß£©
+        /// å•å…ƒæ ¼å°ºå¯¸ï¼ˆå®½ï¼Œé«˜ï¼‰
         /// </summary>
-        [FoldoutGroup("µ¥Ôª¸ñ")] [LabelText("´óĞ¡")]
+        [FoldoutGroup("å•å…ƒæ ¼")] [LabelText("å¤§å°")]
         public Vector2 cellSize = Vector2.one * 100;
 
         /// <summary>
-        /// µ¥Ôª¸ñ³ß´çËõ·Å
+        /// å•å…ƒæ ¼å°ºå¯¸ç¼©æ”¾
         /// </summary>
-        [FoldoutGroup("µ¥Ôª¸ñ")] [LabelText("Ëõ·Å")]
+        [FoldoutGroup("å•å…ƒæ ¼")] [LabelText("ç¼©æ”¾")]
         public Vector2 cellSizeScale = Vector2.one;
 
         /// <summary>
-        /// µ¥Ôª¸ñ¼äÏ¶£¨Ë®Æ½£¬´¹Ö±£©
+        /// å•å…ƒæ ¼é—´éš™ï¼ˆæ°´å¹³ï¼Œå‚ç›´ï¼‰
         /// </summary>
-        [FoldoutGroup("µ¥Ôª¸ñ")] [LabelText("¼ä¾à")]
+        [FoldoutGroup("å•å…ƒæ ¼")] [LabelText("é—´è·")]
         public Vector2 spacingSize;
 
         /// <summary>
-        /// ÁĞÊı
+        /// åˆ—æ•°
         /// </summary>
-        [FoldoutGroup("µ¥Ôª¸ñ")] [LabelText("ºáÏò")] [HorizontalGroup("µ¥Ôª¸ñ/1")]
+        [FoldoutGroup("å•å…ƒæ ¼")] [LabelText("æ¨ªå‘")] [HorizontalGroup("å•å…ƒæ ¼/1")]
         public bool horizontal = true;
 
-        [FoldoutGroup("µ¥Ôª¸ñ")] [LabelText("ÁĞ/ĞĞÊı")] [HorizontalGroup("µ¥Ôª¸ñ/1")]
+        [FoldoutGroup("å•å…ƒæ ¼")] [LabelText("åˆ—/è¡Œæ•°")] [HorizontalGroup("å•å…ƒæ ¼/1")]
         public int columnCount = 4;
 
         /// <summary>
-        /// µ¥Ôª¸ñäÖÈ¾Æ÷prefab
+        /// å•å…ƒæ ¼æ¸²æŸ“å™¨prefab
         /// </summary>
-        [FoldoutGroup("µ¥Ôª¸ñ")] [LabelText("µ¥Ôª¸ñÔ¤ÉèÌå")]
+        [FoldoutGroup("å•å…ƒæ ¼")] [LabelText("å•å…ƒæ ¼é¢„è®¾ä½“")]
         public GameObject renderGo;
 
-        [FoldoutGroup("µ¥Ôª¸ñ/Íâ±ß¾à")] public float top, bottom, left, right;
+        [FoldoutGroup("å•å…ƒæ ¼/å¤–è¾¹è·")] public float top, bottom, left, right;
 
         /// <summary>
-        /// äÖÈ¾¸ñ×ÓÊı
+        /// æ¸²æŸ“æ ¼å­æ•°
         /// </summary>
         private int _mRendererCount;
 
-        [LabelText("¶îÍâäÖÈ¾¸ñ×ÓÊı")] public int extraRenderingCount;
+        [LabelText("é¢å¤–æ¸²æŸ“æ ¼å­æ•°")] public int extraRenderingCount;
 
         /// <summary>
-        /// ¸¸½ÚµãÃÉ°æ³ß´ç
+        /// çˆ¶èŠ‚ç‚¹è’™ç‰ˆå°ºå¯¸
         /// </summary>
         [HideInInspector] public Vector2 mMaskSize;
 
         /// <summary>
-        /// ÃÉ°æ¾ØĞÎ
+        /// è’™ç‰ˆçŸ©å½¢
         /// </summary>
         private Rect _mRectMask;
 
         public ScrollRect mScrollRect;
 
         /// <summary>
-        /// ×ª»»Æ÷
+        /// è½¬æ¢å™¨
         /// </summary>
         public RectTransform mRectTransformContainer;
 
         /// <summary>
-        /// äÖÈ¾½Å±¾¼¯ºÏ
+        /// æ¸²æŸ“è„šæœ¬é›†åˆ
         /// </summary>
         private List<YuoLoopListItem> _mListItems;
 
         /// <summary>
-        /// Êı¾İÌá¹©Õß
+        /// æ•°æ®æä¾›è€…
         /// </summary>
         private List<Vector2Int> _mDataProviders;
 
         public List<Rect> rectData = new();
 
         /// <summary>
-        /// ³õÊ¼»¯äÖÈ¾½Å±¾
+        /// åˆå§‹åŒ–æ¸²æŸ“è„šæœ¬
         /// </summary>
         public void Init()
         {
-            //»ñµÃÃÉ°æ³ß´ç
+            //è·å¾—è’™ç‰ˆå°ºå¯¸
             mMaskSize = mScrollRect.GetComponent<RectTransform>().sizeDelta;
 
             _mRectMask.size = mMaskSize;
 
-            //Í¨¹ıÃÉ°æ³ß´çºÍ¸ñ×Ó³ß´ç¼ÆËãĞèÒªµÄµ¥Ôª¸ñ¸öÊı
+            //é€šè¿‡è’™ç‰ˆå°ºå¯¸å’Œæ ¼å­å°ºå¯¸è®¡ç®—éœ€è¦çš„å•å…ƒæ ¼ä¸ªæ•°
             _mRendererCount = columnCount * (Mathf.CeilToInt(mMaskSize.y / BlockSizeY) + 1 + extraRenderingCount * 2);
             _mListItems = new List<YuoLoopListItem>();
             SetAllRect();
-            //Éú³Éµ¥Ôª¸ñ
+            //ç”Ÿæˆå•å…ƒæ ¼
             for (int i = 0; i < _mRendererCount; ++i)
             {
                 GameObject child = Instantiate(renderGo, mRectTransformContainer, true);
@@ -131,7 +129,7 @@ namespace YuoTools.Extend.UI.LoopList
         }
 
         /// <summary>
-        /// ¸üĞÂ¸÷¸öäÖÈ¾¸ñ×ÓµÄÎ»ÖÃ
+        /// æ›´æ–°å„ä¸ªæ¸²æŸ“æ ¼å­çš„ä½ç½®
         /// </summary>
         /// <param name="child"></param>
         /// <param name="index"></param>
@@ -169,7 +167,7 @@ namespace YuoTools.Extend.UI.LoopList
                 newMask.position -= Temp.V2;
             }
 
-            //»ñÈ¡¿ÉÄÜ»áË¢ĞÂµÄ¸ñ×Ó
+            //è·å–å¯èƒ½ä¼šåˆ·æ–°çš„æ ¼å­
             for (int i = min; i < max; i++)
             {
                 if (rectData[i].Overlaps(newMask))
@@ -206,12 +204,12 @@ namespace YuoTools.Extend.UI.LoopList
                     }
                     else
                     {
-                        Debug.LogError($"Ã»ÓĞ¿ÉÓÃµÄµ¥Ôª¸ñ{WaitItems.Count}");
+                        Debug.LogError($"æ²¡æœ‰å¯ç”¨çš„å•å…ƒæ ¼{WaitItems.Count}");
                     }
                 }
                 else
                 {
-                    //Debug.Log("¼ì²âµ½²»ĞèÒªË¢ĞÂµÄ¸ñ×Ó");
+                    //Debug.Log("æ£€æµ‹åˆ°ä¸éœ€è¦åˆ·æ–°çš„æ ¼å­");
                 }
             }
         }
@@ -264,7 +262,7 @@ namespace YuoTools.Extend.UI.LoopList
                 rectData.Add(dRect);
             }
 
-            //¼ÆËãÈİÆ÷´óĞ¡
+            //è®¡ç®—å®¹å™¨å¤§å°
             if (horizontal)
             {
                 mRectTransformContainer.sizeDelta = new Vector2(left + right + BlockSizeX * columnCount, -top - bottom +
@@ -277,7 +275,7 @@ namespace YuoTools.Extend.UI.LoopList
                     -top - bottom + mRectTransformContainer.sizeDelta.y);
             }
 
-            //ÖØÖÃ¹ö¶¯Ìõ
+            //é‡ç½®æ»šåŠ¨æ¡
             mScrollRect.verticalNormalizedPosition = 1;
         }
 
@@ -288,7 +286,7 @@ namespace YuoTools.Extend.UI.LoopList
         {
             if (mHasInited)
             {
-                //Èç¹ûÃ»ÓĞÔË¶¯.¼¸Ö¡ºó»áÍ£Ö¹Ë¢ĞÂ
+                //å¦‚æœæ²¡æœ‰è¿åŠ¨.å‡ å¸§åä¼šåœæ­¢åˆ·æ–°
                 if (!lastPos.x.ApEqual(mRectTransformContainer.anchoredPosition.x) ||
                     !lastPos.y.ApEqual(mRectTransformContainer.anchoredPosition.y))
                 {
@@ -299,7 +297,7 @@ namespace YuoTools.Extend.UI.LoopList
         }
 
         /// <summary>
-        /// »ñµÃ¸ñ×Ó¿é³ß´ç
+        /// è·å¾—æ ¼å­å—å°ºå¯¸
         /// </summary>
         /// <returns></returns>
         private float BlockSizeY =>

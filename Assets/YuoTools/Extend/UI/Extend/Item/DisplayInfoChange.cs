@@ -31,14 +31,14 @@ public class DisplayInfoChange : MonoBehaviour
                     {
                         if (item.value.dmDisplayFrequency == numerator / 1000)
                         {
-                            DropDown.nowItem = dropItem;
+                            DropDown.NowItem = dropItem;
                         }
                     }
                     else
                     {
                         if (item.value.dmDisplayFrequency == numerator)
                         {
-                            DropDown.nowItem = dropItem;
+                            DropDown.NowItem = dropItem;
                         }
                     }
                 }
@@ -51,13 +51,13 @@ public class DisplayInfoChange : MonoBehaviour
             //     infos[x.Index].value.dmPelsHeight, infos[x.Index].value.dmDisplayFrequency));
             if (ChangeSystem)
             {
-                YuoDisplayInfo.Change(infos[x.Index].value.dmPelsWidth,
-                    infos[x.Index].value.dmPelsHeight, infos[x.Index].value.dmDisplayFrequency);
+                YuoDisplayInfo.Change(infos[x.index].value.dmPelsWidth,
+                    infos[x.index].value.dmPelsHeight, infos[x.index].value.dmDisplayFrequency);
             }
             else
             {
-                Screen.SetResolution(infos[x.Index].value.dmPelsWidth, infos[x.Index].value.dmPelsHeight,Screen.fullScreenMode);
-                Application.targetFrameRate = infos[x.Index].value.dmDisplayFrequency;
+                Screen.SetResolution(infos[x.index].value.dmPelsWidth, infos[x.index].value.dmPelsHeight,Screen.fullScreenMode);
+                Application.targetFrameRate = infos[x.index].value.dmDisplayFrequency;
             }
         };
         DropDown.SetItem($"{Screen.width}*{Screen.height}@{Screen.mainWindowDisplayInfo.refreshRate.numerator}Hz");

@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using YuoTools;
 
@@ -50,7 +51,7 @@ public class YuoDropDown : MonoBehaviour, IPointerClickHandler, IEventSystemHand
                 if (go.GetComponentInParent<YuoDropDown>() == this) return;
             }
 
-            Hide();
+            HideDropDown();
         }
     }
 
@@ -61,7 +62,7 @@ public class YuoDropDown : MonoBehaviour, IPointerClickHandler, IEventSystemHand
 
     public DropItem AddItem(string key, string text)
     {
-        if (dropKeys.ContainsKey(key)) return dropKeys[key];
+        if (dropKeys.TryGetValue(key, out var item)) return item;
 
         DropItem dropItem = Instantiate(dropPre, dropPre.transform.parent).AddComponent<DropItem>();
         dropItem.go = dropItem.gameObject;
@@ -69,12 +70,12 @@ public class YuoDropDown : MonoBehaviour, IPointerClickHandler, IEventSystemHand
         dropItem.go.SetActive(true);
         dropItem.button = dropItem.go.GetComponent<Button>();
         dropItem.text = dropItem.go.transform.Find("Label").GetComponent<Text>();
-        dropItem.Arrow = dropItem.go.transform.Find("Arrow").gameObject;
+        dropItem.arrow = dropItem.go.transform.Find("Arrow").gameObject;
         dropItem.button.onClick.RemoveAllListeners();
-        dropItem.button.onClick.AddListener(Hide);
+        dropItem.button.onClick.AddListener(HideDropDown);
         dropItem.button.onClick.AddListener(() => SetItem(dropItem));
         dropItem.text.text = text;
-        dropItem.Index = dropItems.Count;
+        dropItem.index = dropItems.Count;
         dropItems.Add(dropItem);
         dropKeys.Add(key, dropItem);
         return dropItem;
@@ -98,67 +99,67 @@ public class YuoDropDown : MonoBehaviour, IPointerClickHandler, IEventSystemHand
         dropKeys.Clear();
     }
 
-    public void Hide()
+    public void HideDropDown()
     {
         DropList.gameObject.SetActive(false);
         Arrow.transform.localScale = _defScale;
         transform.SetSiblingIndex(defSortOrder);
     }
 
-    public void Show()
+    public void ShowDropDown()
     {
         DropList.gameObject.SetActive(true);
 
         Arrow.transform.localScale = _defScale * -1;
-        if (nowItem != null)
-            DropList.verticalNormalizedPosition = 1f - nowItem.Index / (dropItems.Count - 1f);
+        if (NowItem != null)
+            DropList.verticalNormalizedPosition = 1f - NowItem.index / (dropItems.Count - 1f);
         defSortOrder = transform.GetSiblingIndex();
         transform.SetSiblingIndex(transform.parent.childCount - 1);
     }
 
-    [SerializeField] private DropItem _nowItem;
+    [SerializeField] private DropItem nowItem;
 
-    public DropItem nowItem
+    public DropItem NowItem
     {
-        get => _nowItem;
+        get => nowItem;
         set
         {
             OnValueChanged?.Invoke(value);
-            _nowItem = value;
+            nowItem = value;
             LableText.text = value.name;
         }
     }
 
     public UnityAction<DropItem> OnValueChanged;
 
-    public void SetItem(DropItem item)
+    public void SetItem(DropItem itemName)
     {
-        nowItem = item;
-        foreach (var _item in dropItems)
+        NowItem = itemName;
+        foreach (var item in dropItems)
         {
-            if (_item.Arrow.activeSelf)
+            if (item.arrow.activeSelf)
             {
-                _item.Arrow.SetActive(false);
+                item.arrow.SetActive(false);
             }
         }
 
-        item.Arrow.SetActive(true);
+        itemName.arrow.SetActive(true);
     }
 
-    public void SetItem(string item)
+    public void SetItem(string key)
     {
-        if (dropKeys.ContainsKey(item))
+        if (dropKeys.ContainsKey(key))
         {
-            foreach (var _item in dropItems)
+            foreach (var item in dropItems)
             {
-                if (_item.Arrow.activeSelf)
+                if (item.arrow.activeSelf)
                 {
-                    _item.Arrow.SetActive(false);
+                    item.arrow.SetActive(false);
                 }
             }
 
-            nowItem = dropKeys[item];
-            dropKeys[item].Arrow.SetActive(true);
+            NowItem = dropKeys[key];
+            dropKeys[key].arrow.SetActive(true);
         }
     }
 
@@ -168,12 +169,12 @@ public class YuoDropDown : MonoBehaviour, IPointerClickHandler, IEventSystemHand
         {
             if (eventData.selectedObject == gameObject)
             {
-                Hide();
+                HideDropDown();
             }
         }
         else
         {
-            Show();
+            ShowDropDown();
         }
         //EventSystem.current.SetSelectedGameObject(base.gameObject);
     }
@@ -187,10 +188,11 @@ public class YuoDropDown : MonoBehaviour, IPointerClickHandler, IEventSystemHand
     public class DropItem : MonoBehaviour
     {
         public new string name;
-        public int Index;
+        public int index;
         public GameObject go;
         public Button button;
         public Text text;
-        public GameObject Arrow;
+        public GameObject arrow;
+        public object Action;
     }
 }

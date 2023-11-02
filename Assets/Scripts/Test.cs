@@ -4,6 +4,8 @@ using Sirenix.OdinInspector;
 using Unity.Collections;
 using UnityEditor.Localization;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using YuoTools;
 using Debug = UnityEngine.Debug;
 
@@ -18,15 +20,21 @@ public class Test : MonoBehaviour
     [Button]
     public void TestTime()
     {
-        Debug.ClearDeveloperConsole();
+        // Debug.ClearDeveloperConsole();
         // ListAddTest().Log();
         // NativeListAddTest().Log();
         // ListFindTest().Log();
         // NativeListFindTest().Log();
         // ListRemoveTest().Log();
         // NativeListRemoveTest().Log();
-        // TableCollection.GetTable("Test_1").LocaleIdentifier.Code.Log();
-        // TableCollection.SharedData.GetEntry("Test_1").Metadata.Log();
+        // TableCollection.GetTable("Test_1").Log().LocaleIdentifier.Log().Code.Log();
+        // foreach (var tableCollectionStringTable in TableCollection.StringTables)
+        // {
+        //     foreach (var stringTableEntry in tableCollectionStringTable.Values)
+        //     {
+        //         $"{stringTableEntry.Key}_{stringTableEntry.Value}".Log();
+        //     }
+        // }
     }
 
     string ListAddTest()

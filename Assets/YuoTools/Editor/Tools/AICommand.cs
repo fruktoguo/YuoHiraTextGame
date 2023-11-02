@@ -83,9 +83,11 @@ namespace AICommand
                 case CommandType.EditorScript:
                     CreateScriptAsset(result);
                     break;
+#if UNITY_EDITOR_WIN
                 case CommandType.CmdCommand:
                     WindowsHelper.Command(result);
                     break;
+#endif
             }
         }
 

@@ -25,7 +25,7 @@ public class SwitchTargetDisplay : MonoBehaviour
         }
         dropDown.OnValueChanged += x =>
         {
-            Screen.MoveMainWindowTo(displayInfos[x.Index], Vector2Int.zero);
+            Screen.MoveMainWindowTo(displayInfos[x.index], Vector2Int.zero);
         };
     }
 }
