@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Sirenix.OdinInspector;
 using Unity.Collections;
 using UnityEditor.Localization;
+using UnityEditor.Scripting.Python;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using YuoTools;
+using YuoTools.Extend.Helper;
 using Debug = UnityEngine.Debug;
 
 public class Test : MonoBehaviour
@@ -16,6 +19,18 @@ public class Test : MonoBehaviour
     private Stopwatch sp = new();
 
     public StringTableCollection TableCollection;
+
+    private void Start()
+    {
+        IpcHelper.Listen();
+        IpcHelper.MessageReceived += message => message.Log();
+    }
+
+    private void OnDestroy()
+    {
+        IpcHelper.Destroy();
+    }
+
     //性能测试
     [Button]
     public void TestTime()
@@ -35,6 +50,12 @@ public class Test : MonoBehaviour
         //         $"{stringTableEntry.Key}_{stringTableEntry.Value}".Log();
         //     }
         // }
+    }
+
+    [Button]
+    public void RunPy(TextAsset text)
+    {
+        PythonRunner.RunFile(text.text);
     }
 
     string ListAddTest()

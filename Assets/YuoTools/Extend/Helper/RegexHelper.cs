@@ -1,5 +1,8 @@
 ﻿namespace YuoTools.Extend.Helper
 {
+    /// <summary>
+    /// 正则表达式帮助类
+    /// </summary>
     public class RegexHelper
     {
         public const string Email = @"^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";

@@ -1,10 +1,6 @@
-using System.Net;
-using System.IO;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Sirenix.Utilities;
 
 namespace YuoTools
 {

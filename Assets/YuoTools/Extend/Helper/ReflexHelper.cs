@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace YuoTools.Extend.Helper
 {
+    /// <summary>
+    /// 反射帮助类
+    /// </summary>
     public static class ReflexHelper
     {
         /// <summary>

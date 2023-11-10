@@ -157,6 +157,8 @@ namespace YuoTools.Extend.YuoMathf
         public static implicit operator YuoVector2Int(YuoVector2 a) => new((int)a.x, (int)a.y);
 
         public static implicit operator Vector2(YuoVector2 a) => new(a.x, a.y);
+        
+        public static implicit operator Vector3(YuoVector2 a) => new(a.x, a.y);
 
         public static implicit operator YuoVector2(Vector2 a) => new(a.x, a.y);
     }
