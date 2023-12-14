@@ -31,7 +31,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7336131223248232019}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -115,7 +114,6 @@ RectTransform:
   - {fileID: 7336131223248232019}
   - {fileID: 7369919641657360454}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -206,7 +204,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7369919641657360454}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -288,7 +285,6 @@ RectTransform:
   m_Children:
   - {fileID: 3020721567660249254}
   m_Father: {fileID: 3040101065569451355}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -410,7 +406,6 @@ RectTransform:
   m_Children:
   - {fileID: 437561108962808159}
   m_Father: {fileID: 3040101065569451355}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -504,8 +499,13 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 3040101065569451355}
     m_Modifications:
+    - target: {fileID: 1096806126522466810, guid: 449e43e9299253640af1ccf7cbbe6483, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2273134195024766287, guid: 449e43e9299253640af1ccf7cbbe6483, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
@@ -514,9 +514,17 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5508637696615262126, guid: 449e43e9299253640af1ccf7cbbe6483, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5508637697738741633, guid: 449e43e9299253640af1ccf7cbbe6483, type: 3}
       propertyPath: m_Name
       value: "\u8272\u8F6E"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5508637697738741633, guid: 449e43e9299253640af1ccf7cbbe6483, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5508637697738741644, guid: 449e43e9299253640af1ccf7cbbe6483, type: 3}
       propertyPath: m_Color.a
@@ -627,6 +635,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 449e43e9299253640af1ccf7cbbe6483, type: 3}
 --- !u!114 &2826108459896963278 stripped
 MonoBehaviour:

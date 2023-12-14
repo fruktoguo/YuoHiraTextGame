@@ -1,90 +1,40 @@
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
-
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 using UnityEngine;
-
 using YuoTools;
+using YuoTools.Extend.Helper;
+using YuoTools.Extend.YuoMathf;
 
-public class YuoAStarSearch : SerializedMonoBehaviour
+public class YuoAStarSearch
 {
-    //public Vector2Int MapSize = Vector2Int.one * 10;
     public int MapSizeX;
-
     public int MapSizeY;
 
-    [HideInInspector]
-    private int[,] _Map = new int[,] {
-            {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,1,1,1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-            {0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        };
-
-    [TableMatrix(DrawElementMethod = "DrawElement", RowHeight = 30)]
     public YuoGrid[,] Map;
 
-#if UNITY_EDITOR
-
-    private static YuoGrid DrawElement(Rect rect, YuoGrid value)
+    public YuoAStarSearch(int[,] map)
     {
-        if (!value.CanMove)
-        {
-            UnityEditor.EditorGUI.DrawRect(rect, new Color(0, 1, 1));
-        }
-        if (value.Close)
-        {
-            UnityEditor.EditorGUI.DrawRect(rect, new Color(1, 0, 0));
-            UnityEditor.EditorGUI.TextArea(rect.SetHeight(20), (value.f).ToString());
-        }
-        return value;
+        SetMap(map);
     }
 
-#endif
-
-    private void Init()
+    void SetMap(int[,] map)
     {
-        //_Map = new int[50, 50];
-        MapSizeX = _Map.GetLength(0);
-        MapSizeY = _Map.GetLength(1);
-        // for (int x = 0; x < MapSizeX; x++)
-        // {
-        //     for (int y = 0; y < MapSizeY; y++)
-        //     {
-        //         //if (x < MapSizeX - 2 && y == MapSizeY / 2)
-        //         if (x > 1 && y == MapSizeY / 2)
-        //             _Map[x, y] = 1;
-        //         else
-        //             _Map[x, y] = 0;
-        //     }
-        // }
+        MapSizeX = map.GetLength(0);
+        MapSizeY = map.GetLength(1);
         Map = new YuoGrid[MapSizeX, MapSizeY];
-        for (int x = 0; x < _Map.GetLength(0); x++)
+        for (int x = 0; x < map.GetLength(0); x++)
         {
-            for (int y = 0; y < _Map.GetLength(1); y++)
+            for (int y = 0; y < map.GetLength(1); y++)
             {
-                var grid = new YuoGrid();
-                grid.x = x;
-                grid.y = y;
-                grid.CanMove = _Map[x, y] == 0;
+                var grid = new YuoGrid
+                {
+                    X = x,
+                    Y = y,
+                    CanMove = map[x, y] == 0
+                };
                 Map[x, y] = grid;
             }
         }
@@ -93,58 +43,94 @@ public class YuoAStarSearch : SerializedMonoBehaviour
     public List<YuoGrid> Search(Vector2Int startPos, Vector2Int endPos)
     {
         Search(startPos.x, startPos.y, endPos.x, endPos.y);
-        YuoGrid End = Map[MapSizeX - 1, MapSizeY - 1];
-        if (End.Parent == null)
+        YuoGrid end = Map[MapSizeX - 1, MapSizeY - 1];
+        if (end.Parent == null)
         {
             return null;
         }
+
         List<YuoGrid> path = new List<YuoGrid>();
-        while (End.Parent != null)
+        while (end.Parent != null)
         {
-            End = End.Parent;
-            path.Add(End);
+            end = end.Parent;
+            path.Add(end);
         }
+
         return path;
     }
 
-    private void Search(int StartX, int StartY, int TargetX, int TargetY)
+    void ResetMap()
     {
         foreach (var item in Map)
         {
             item.Close = false;
             item.Open = false;
-            item.f = 0;
-            item.h = 0;
+            item.F = 0;
+            item.H = 0;
             item.Parent = null;
         }
+
         openQueue.Clear();
-        YuoGrid startYuoGrid = Map[StartX, StartY];
-        YuoGrid endYuoGrid = Map[TargetX, TargetY];
+    }
+
+    private bool Search(int startX, int startY, int targetX, int targetY)
+    {
+        StopwatchHelper.Start();
+        ResetMap();
+        YuoGrid startYuoGrid = Map[startX, startY];
+        YuoGrid endYuoGrid = Map[targetX, targetY];
         Min = startYuoGrid;
         Open(startYuoGrid, null);
-        //????·????,???????
-        int MaxSearchNum = 100000;
+
+        int maxSearchNum = MapSizeX * MapSizeY * 100;
+
         while (openQueue.Count > 0)
         {
-            MaxSearchNum--;
-            if (MaxSearchNum < 0)
+            maxSearchNum--;
+            if (maxSearchNum < 0)
             {
-                Debug.LogError("?????");
-                return;
+                Debug.LogError("运行超时");
+                return false;
             }
+
             FindNeighbors(Min);
             Close(Min);
             if (endYuoGrid.Open)
             {
-                return;
+                var ms = StopwatchHelper.Stop();
+                Debug.Log($"运行结束,总共计算{MapSizeX * MapSizeY * 100 - maxSearchNum}次,耗时{ms}毫秒");
+                return true;
             }
         }
+
+        StopwatchHelper.Stop();
+        return false;
     }
 
-    /// <summary>
-    /// ?????Χ?????Openlist
-    /// </summary>
-    /// <param name="grid"></param>
+    public List<YuoVector2Int> Search(YuoVector2Int start, YuoVector2Int end)
+    {
+        if (start.x < 0 || start.x >= MapSizeX || start.y < 0 || start.y >= MapSizeY)
+        {
+            Debug.LogError("请输入正确的起止点");
+        }
+
+        if (!Search(start.x, start.y, end.x, end.y))
+        {
+            return new();
+        }
+
+        var endNode = Map[end.x, end.y];
+        List<YuoVector2Int> path = new();
+        while (endNode.Parent != null)
+        {
+            endNode = endNode.Parent;
+            path.Add(new(endNode.X, endNode.Y));
+        }
+
+        return path;
+    }
+
+
     private void FindNeighbors(YuoGrid grid)
     {
         for (int x = -1; x < 2; x++)
@@ -155,9 +141,9 @@ public class YuoAStarSearch : SerializedMonoBehaviour
                 if (x == 0 && y == 0)
                     continue;
                 //??????????
-                if (!(grid.x + x).InRange(0, MapSizeX - 1) || !(grid.y + y).InRange(0, MapSizeY - 1))
+                if (!(grid.X + x).InRange(0, MapSizeX - 1) || !(grid.Y + y).InRange(0, MapSizeY - 1))
                     continue;
-                var gridTemp = Map[grid.x + x, grid.y + y];
+                var gridTemp = Map[grid.X + x, grid.Y + y];
                 //????????
                 if (!gridTemp.CanMove)
                     continue;
@@ -183,10 +169,11 @@ public class YuoAStarSearch : SerializedMonoBehaviour
         {
             openQueue.Enqueue(grid);
         }
+
         grid.OpenGrid(parent);
         grid.Open = true;
         grid.Close = false;
-        if (grid.f < Min.f)
+        if (grid.F < Min.F)
         {
             Min = grid;
         }
@@ -194,7 +181,7 @@ public class YuoAStarSearch : SerializedMonoBehaviour
 
     private Queue<YuoGrid> openQueue = new Queue<YuoGrid>();
 
-    public void Close(YuoGrid grid)
+    void Close(YuoGrid grid)
     {
         if (grid.Open == true)
         {
@@ -203,47 +190,26 @@ public class YuoAStarSearch : SerializedMonoBehaviour
             {
                 Min = openQueue.Peek();
             }
+
             grid.Close = true;
-        }
-    }
-
-    public int num;
-
-    private void Start()
-    {
-        Init();
-        for (int i = 0; i < num; i++)
-        {
-            Search(5, 1, MapSizeX - 1, MapSizeY - 1);
-        }
-        YuoGrid End = Map[MapSizeX - 1, MapSizeY - 1];
-        List<YuoGrid> path = new List<YuoGrid>();
-        while (End.Parent != null)
-        {
-            End = End.Parent;
-            path.Add(End);
-        }
-        if (End.Open)
-        {
         }
     }
 
     [System.Serializable]
     public class YuoGrid
     {
-        public int x;
-        public int y;
+        public int X;
+        public int Y;
 
         public bool CanMove;
 
-        // ?·???
         public bool Open;
 
         public bool Close;
 
-        public int f = 0;
-        public int g = 0;
-        public int h = 0;
+        public int F = 0;
+        public int G = 0;
+        public int H = 0;
 
         public YuoGrid Parent;
 
@@ -252,16 +218,17 @@ public class YuoAStarSearch : SerializedMonoBehaviour
             if (parent == null)
                 return;
             Parent = parent;
-            int wi = Mathf.Abs(x - parent.x);
-            int he = Mathf.Abs(y - parent.y);
+            int wi = Mathf.Abs(X - parent.X);
+            int he = Mathf.Abs(Y - parent.Y);
             if (wi == 1 && he == 1)
             {
-                g = parent.g + 14;
+                G = parent.G + 14;
             }
             else
-                g = parent.g + 10;
-            h = (int)Mathf.Sqrt(wi * wi + he * he) * 10;
-            f = g + h;
+                G = parent.G + 10;
+
+            H = (int)Mathf.Sqrt(wi * wi + he * he) * 10;
+            F = G + H;
         }
     }
 }

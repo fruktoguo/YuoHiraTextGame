@@ -1,9 +1,10 @@
+using Sirenix.OdinInspector;
 using Unity.Mathematics;
-
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
+using YuoTools.Extend.Helper;
 
 public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandler, IDragHandler
 {
@@ -12,13 +13,13 @@ public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandle
     public RectTransform RingPointer;
     public RectTransform BlockPointer;
 
-    private Image RingImage;
-    private Image BlockImage;
+    private Image ringImage;
+    private Image blockImage;
     private EditType curType;
-    private Color HSVColor = new Color(1, 1, 1, 1);
+    private Color hsvColor = new Color(1, 1, 1, 1);
 
     public UnityEvent<Color> OnValueChange;
-    private Color _color = new Color(1, 1, 1, 1);
+    [SerializeField] [ReadOnly] private Color _color = new Color(1, 1, 1, 1);
 
     public Color Color
     {
@@ -33,10 +34,13 @@ public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandle
         }
     }
 
+    private RectTransform rectTransform;
+
     private void Start()
     {
-        RingImage = Ring.GetComponent<Image>();
-        BlockImage = Block.GetComponent<Image>();
+        rectTransform = GetComponent<RectTransform>();
+        ringImage = Ring.GetComponent<Image>();
+        blockImage = Block.GetComponent<Image>();
         Texture2D texture = new Texture2D(500, 500);
         for (int x = 0; x < texture.width; x++)
         {
@@ -45,9 +49,10 @@ public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandle
                 texture.SetPixel(x, y, RingColor(new Vector2((float)x / texture.width, (float)y / texture.height)));
             }
         }
+
         texture.Apply();
         Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
-        RingImage.sprite = sprite;
+        ringImage.sprite = sprite;
     }
 
     private Color RingColor(Vector2 uv)
@@ -61,7 +66,7 @@ public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandle
     }
 
     /// <summary>
-    /// »ùÓÚÖÐÐÄµã
+    /// åŸºäºŽä¸­å¿ƒç‚¹
     /// </summary>
     /// <param name="pos"></param>
     /// <returns></returns>
@@ -70,8 +75,8 @@ public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandle
         pos = pos.normalized;
         var arc = math.acos(math.dot(Vector2.right, pos));
         if (pos.y < 0) arc = math.PI * 2 - arc;
-        HSVColor.r = arc * 1f / math.PI / 2f;
-        return Color.HSVToRGB(HSVColor.r, 1, 1);
+        hsvColor.r = arc * 1f / math.PI / 2f;
+        return Color.HSVToRGB(hsvColor.r, 1, 1);
     }
 
     public void SetColorWithoutNotify(Color value)
@@ -79,10 +84,10 @@ public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandle
         _color = value;
         _color.a = 1;
 
-        Color.RGBToHSV(value, out HSVColor.r, out HSVColor.g, out HSVColor.b);
-        BlockImage.color = Color.HSVToRGB(HSVColor.r, 1, 1);
-        RingPointer.localEulerAngles = Vector3.forward * (HSVColor.r * 360 - 180);
-        V2Temp.Set(HSVColor.g, HSVColor.b);
+        Color.RGBToHSV(value, out hsvColor.r, out hsvColor.g, out hsvColor.b);
+        blockImage.color = Color.HSVToRGB(hsvColor.r, 1, 1);
+        RingPointer.localEulerAngles = Vector3.forward * (hsvColor.r * 360 - 180);
+        V2Temp.Set(hsvColor.g, hsvColor.b);
         BlockPointer.anchorMin = V2Temp;
         BlockPointer.anchorMax = V2Temp;
         BlockPointer.anchoredPosition = Vector2.zero;
@@ -90,21 +95,21 @@ public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandle
 
     private void OnRing(Vector2 pos)
     {
-        BlockImage.color = PosToColor(pos - Ring.rect.center);
-        RingPointer.localEulerAngles = Vector3.forward * (HSVColor.r * 360 - 180);
-        Color = Color.HSVToRGB(HSVColor.r, HSVColor.g, HSVColor.b);
+        blockImage.color = PosToColor(pos - Ring.rect.center);
+        RingPointer.localEulerAngles = Vector3.forward * (hsvColor.r * 360 - 180);
+        Color = Color.HSVToRGB(hsvColor.r, hsvColor.g, hsvColor.b);
     }
 
     private void OnBlock(Vector2 pos)
     {
         pos.x = math.clamp(pos.x, 0, 1);
         pos.y = math.clamp(pos.y, 0, 1);
-        HSVColor.g = pos.x;
-        HSVColor.b = pos.y;
+        hsvColor.g = pos.x;
+        hsvColor.b = pos.y;
         BlockPointer.anchorMin = pos;
         BlockPointer.anchorMax = pos;
         BlockPointer.anchoredPosition = Vector2.zero;
-        Color = Color.HSVToRGB(HSVColor.r, HSVColor.g, HSVColor.b);
+        Color = Color.HSVToRGB(hsvColor.r, hsvColor.g, hsvColor.b);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -119,9 +124,9 @@ public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandle
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Vector2 localPos = transform.worldToLocalMatrix.MultiplyPoint(Camera.main.ScreenToWorldPoint(eventData.position));
-        Vector2 dir = localPos - Ring.rect.center;
-        dir.Set(dir.x * 2 / Ring.rect.width, dir.y * 2 / Ring.rect.height);
+        var dir = RectTransformHelper.GetSelectPointerRatio(rectTransform, eventData);
+        dir -= Vector2.one * 0.5f;
+        dir *= 2;
         float r = dir.magnitude;
         if (r >= (1 - RingLen) && r <= 1)
         {
@@ -150,9 +155,9 @@ public class ColorRing : MonoBehaviour, IPointerDownHandler, IPointerClickHandle
     private void Check(PointerEventData eventData)
     {
         if (curType == EditType.None) return;
-        Vector2 localPos = transform.worldToLocalMatrix.MultiplyPoint(Camera.main.ScreenToWorldPoint(eventData.position));
-        Vector2 dir = localPos - Ring.rect.center;
-        dir.Set(dir.x * 2 / Ring.rect.width, dir.y * 2 / Ring.rect.height);
+        var dir = RectTransformHelper.GetSelectPointerRatio(rectTransform, eventData);
+        dir -= Vector2.one * 0.5f;
+        dir *= 2;
         if (curType == EditType.Ring)
         {
             OnRing(dir);

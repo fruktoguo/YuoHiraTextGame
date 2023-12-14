@@ -57,7 +57,7 @@ namespace YuoTools.Editor.Ecs
         }
 
 
-        protected override void OnGUI()
+        protected override void OnImGUI()
         {
             if (!Application.isPlaying)
             {
@@ -112,7 +112,7 @@ namespace YuoTools.Editor.Ecs
                 entityView.Update();
             }
 
-            base.OnGUI();
+            base.OnImGUI();
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]

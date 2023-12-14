@@ -10,6 +10,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using YuoTools;
 using YuoTools.Extend.Helper;
+using YuoTools.Main.Ecs;
 using Debug = UnityEngine.Debug;
 
 public class Test : MonoBehaviour
@@ -22,13 +23,47 @@ public class Test : MonoBehaviour
 
     private void Start()
     {
-        IpcHelper.Listen();
-        IpcHelper.MessageReceived += message => message.Log();
+        // IpcHelper.Listen();
+        // IpcHelper.MessageReceived += message => message.Log();
     }
 
     private void OnDestroy()
     {
         IpcHelper.Destroy();
+    }
+
+    public Vector3 t1;
+    public Transform tran1;
+    public Transform tran2;
+    public Transform tran3;
+    public Transform tran4;
+    public Transform tran5;
+
+    [Button]
+    public void Test1()
+    {
+        tran1.position = t1;
+        tran2.position = Vector3.ProjectOnPlane(t1, Vector3.up);
+        print(Vector3.Angle(tran1.position, tran2.position));
+        var qua1 = Quaternion.LookRotation(tran1.position);
+
+        var qua2 = Quaternion.LookRotation(tran2.position);
+        var f2 = Quaternion.Inverse(qua1) * qua2;
+        tran3.rotation = (qua2 * f2);
+        tran4.rotation = qua1;
+        tran5.rotation = qua2;
+        print((qua1.eulerAngles, qua2.eulerAngles, f2.eulerAngles, (qua1 * f2).eulerAngles));
+    }
+
+    public Transform target;
+
+    void Update()
+    {
+        // 计算从当前方向到目标方向的旋转
+        Quaternion rotation = Quaternion.FromToRotation(transform.forward, target.position - transform.position);
+
+        // 将变换的方向设置为目标方向
+        transform.rotation *= rotation;
     }
 
     //性能测试
@@ -55,7 +90,7 @@ public class Test : MonoBehaviour
     [Button]
     public void RunPy(TextAsset text)
     {
-        PythonRunner.RunFile(text.text);
+        PythonRunner.RunString(text.text);
     }
 
     string ListAddTest()

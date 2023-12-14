@@ -7,6 +7,8 @@ namespace YuoTools.Extend.Helper
     /// </summary>
     public static class CoordinateConversionHelper
     {
+        public static Vector3 LocalToWorld(Vector3 localPosition, Vector3 parentPosition, Quaternion parentRotation) => LocalToWorld(localPosition, parentPosition, parentRotation, Vector3.one);
+
         /// <summary>
         /// 将本地坐标转换为世界坐标
         /// </summary>
@@ -20,6 +22,8 @@ namespace YuoTools.Extend.Helper
             Vector3 worldPosition = worldPositionWithHomogeneous;
             return worldPosition;
         }
+
+        public static Vector3 WorldToLocal(Vector3 worldPosition, Vector3 parentPosition, Quaternion parentRotation) => WorldToLocal(worldPosition, parentPosition, parentRotation, Vector3.one);
 
         /// <summary>
         /// 将世界坐标转换为本地坐标
