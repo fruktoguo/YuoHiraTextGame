@@ -56,10 +56,20 @@ namespace YuoTools.Extend.YuoMathf
         {
             return new YuoVector2Int(a.x + b.x, a.y + b.y);
         }
+        
+        public static YuoVector2Int operator +(YuoVector2Int a, int b)
+        {
+            return new YuoVector2Int(a.x + b, a.y + b);
+        }
 
         public static YuoVector2Int operator -(YuoVector2Int a, YuoVector2Int b)
         {
             return new YuoVector2Int(a.x - b.x, a.y - b.y);
+        }
+        
+        public static YuoVector2Int operator -(YuoVector2Int a, int b)
+        {
+            return new YuoVector2Int(a.x - b, a.y - b);
         }
 
         public static YuoVector2Int operator *(YuoVector2Int a, int b)

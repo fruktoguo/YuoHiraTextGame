@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
@@ -6,27 +7,27 @@ namespace YuoTools
 {
     public class YuoBStarSearch : SerializedMonoBehaviour
     {
-        [HideInInspector]
-        private int[,] _Map = new int[,] {
-            {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,1,1,1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,0,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            {0,0,1,0,0,1,0,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
-            {0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        [HideInInspector] public int[,] _Map = new int[,]
+        {
+            { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 },
+            { 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         };
 
         [TableMatrix(DrawElementMethod = "DrawElement", RowHeight = 30)]
@@ -40,14 +41,17 @@ namespace YuoTools
             {
                 UnityEditor.EditorGUI.DrawRect(rect, new Color(1, 0, 0));
             }
+
             if (value.IsMoved)
             {
                 UnityEditor.EditorGUI.DrawRect(rect, new Color(1, 1, 0));
             }
+
             if (value.Tag)
             {
                 UnityEditor.EditorGUI.DrawRect(rect, new Color(1, 1, 1));
             }
+
             return value;
         }
 
@@ -78,6 +82,7 @@ namespace YuoTools
                     temp = Vector2Int.down;
                 }
             }
+
             return temp;
         }
 
@@ -119,14 +124,15 @@ namespace YuoTools
         private void Start()
         {
             Init();
-            for (int i = 0; i < num; i++)
-            {
-                Search(5, 1, MapSizeX - 1, MapSizeY - 1);
-            }
-            for (int i = 0; i < OverBranch.Path.Count; i++)
-            {
-                OverBranch.Path[i].Tag = true;
-            }
+            // for (int i = 0; i < num; i++)
+            // {
+            //     Search(1, 1, MapSizeX - 2, MapSizeY - 2);
+            // }
+            //
+            // for (int i = 0; i < OverBranch.Path.Count; i++)
+            // {
+            //     OverBranch.Path[i].Tag = true;
+            // }
         }
 
         private void Search(int StartX, int StartY, int TargetX, int TargetY)
@@ -135,6 +141,7 @@ namespace YuoTools
             {
                 item.IsMoved = false;
             }
+
             BranchList.Clear();
             OverBranch = null;
             SearchEnd = false;
@@ -149,9 +156,9 @@ namespace YuoTools
             {
                 if (SearchEnd)
                 {
-
                     return;
                 }
+
                 //步进
                 Count = BranchList.Count;
                 for (int j = 0; j < Count; j++)
@@ -160,6 +167,7 @@ namespace YuoTools
                 }
             }
         }
+
         private void Update()
         {
             if (Input.GetKey(KeyCode.A))
@@ -171,6 +179,7 @@ namespace YuoTools
                     GoNext(BranchList[j]);
                 }
             }
+
             if (Input.GetKeyDown(KeyCode.D))
             {
                 if (SearchEnd) return;
@@ -180,7 +189,27 @@ namespace YuoTools
                     GoNext(BranchList[j]);
                 }
             }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Init();
+                foreach (var item in Map)
+                {
+                    item.IsMoved = false;
+                }
+
+                BranchList.Clear();
+                OverBranch = null;
+                SearchEnd = false;
+                int MaxSearchNum = MapSizeX * MapSizeY;
+                Branch branch = branchPools.GetItem(null);
+                branch.Endx = MapSizeX - 2;
+                branch.Endy = MapSizeY - 2;
+                branch.Add(Map[1, 1]);
+                BranchList.Add(branch);
+            }
         }
+
         private bool SearchEnd = false;
 
         private bool HasMoved(int x, int y)
@@ -194,16 +223,15 @@ namespace YuoTools
             return false;
         }
 
-        [HideInInspector]
-        public Branch OverBranch;
+        [HideInInspector] public Branch OverBranch;
         public int MapSizeX;
         public int MapSizeY;
 
-        [HideInInspector]
         /// <summary>
         /// 所有的分支
         /// </summary>
         public List<Branch> BranchList = new List<Branch>();
+
         void MoveTo(Branch branch, int x, int y)
         {
             branch.Add(Map[x, y]);
@@ -213,6 +241,7 @@ namespace YuoTools
                 OverBranch = branch;
                 return;
             }
+
             if (!BranchList.Contains(branch))
             {
                 BranchList.Add(branch);
@@ -221,65 +250,87 @@ namespace YuoTools
 
         public void GoNext(Branch branch)
         {
+            print("这是一条branch");
             var now = branch.Now();
             int addx = branch.Endx <= now.x ? -1 : 1;
             int addy = branch.Endy <= now.y ? -1 : 1;
             bool MainBranch = false;
-            if (CanMove(now.x + addx, now.y))
+            //右能移动
+            if (CanMove(now.x + addx, now.y, branch))
             {
-
-                if (!CanMove(now.x + addx, now.y + addy))
+                if (!CanMove(now.x + addx, now.y + addy, branch))
                 {
                     //右下不能移动 右下分两支
+                    print("右下不能移动 右下分两支");
                     Move(branch, now.x, now.y + addy); //下
                     Move(branch, now.x + addx, now.y); //右
                 }
-                if (!CanMove(now.x + addx, now.y - addx))
+
+                if (!CanMove(now.x + addx, now.y - addx, branch))
                 {
                     //右上不能移动 右上分两支
+                    print("右上不能移动 右上分两支");
                     Move(branch, now.x + addx, now.y); //右
                     Move(branch, now.x, now.y - addy); //上
                 }
-                if (!CanMove(now.x - addx, now.y + addy))
+
+                if (!CanMove(now.x - addx, now.y + addy, branch))
                 {
                     //左下不能移动 左下分两支
+                    print("左下不能移动 左下分两支");
                     Move(branch, now.x, now.y + addy); //下
                     Move(branch, now.x - addx, now.y); //左
                 }
-                if (!CanMove(now.x - addx, now.y - addy))
+
+                if (!CanMove(now.x - addx, now.y - addy, branch))
                 {
                     //左上不能移动 左上分两支
+                    print("左上不能移动 左上分两支");
                     Move(branch, now.x, now.y - addy); //上
                     Move(branch, now.x - addx, now.y); //左
                 }
-                if (!CanMove(now.x, now.y + addy) && !CanMove(now.x, now.y + addy))
+
+                if (!CanMove(now.x, now.y + addy, branch) && !CanMove(now.x, now.y + addy, branch))
                 {
                     //上下不能移动 左右分两支
+                    print("上下不能移动 左右分两支");
                     Move(branch, now.x + addx, now.y); //右
                     Move(branch, now.x - addx, now.y); //左
                 }
+
                 if (MainBranch)
                 {
                     //想要不太贴墙就把这个return去掉
-                    return;
+                    // return;
                 }
+
                 //没有任何拐角,继续走
                 if (((now.x - branch.Endx).RAbs() > (now.y - branch.Endy).RAbs()))
+                {
+                    print("没有任何拐角,继续走下");
+
                     Move(branch, now.x, now.y + addy); //下
+                }
                 else
+                {
+                    print("没有任何拐角,继续走右");
+
                     Move(branch, now.x + addx, now.y); //右
+                }
             }
             else
             {
-                if (!CanMove(now.x, now.y + addy) && !CanMove(now.x, now.y + addy))
+                if (!CanMove(now.x, now.y + addy, branch) && !CanMove(now.x, now.y - addy, branch))
                 {
                     //上下不能移动 左右分两支
+                    print("上下不能移动 左右分两支");
                     Move(branch, now.x + addx, now.y); //右
                     Move(branch, now.x - addx, now.y); //左
                 }
                 else
                 {
                     //能移动就上下分两支
+                    print("能移动就上下分两支");
                     Move(branch, now.x, now.y + addy); //下
                     Move(branch, now.x, now.y - addy); //上
                 }
@@ -294,7 +345,7 @@ namespace YuoTools
                 //已经走过的路径
                 if (HasMoved(x, y)) return;
                 //墙体,不能移动的
-                if (!CanMove(x, y)) return;
+                if (!CanMove(x, y, branch)) return;
                 //如果主分支没有被使用
                 if (!MainBranch)
                 {
@@ -310,14 +361,19 @@ namespace YuoTools
                 }
             }
         }
+
         BranchPools branchPools = new BranchPools();
-        private bool CanMove(int x, int y)
+
+        private bool CanMove(int x, int y, Branch branch)
         {
             if (!(x).InRange(0, MapSizeX - 1) || !(y).InRange(0, MapSizeY - 1))
                 return false;
+            if (branch.Path.Contains(Map[x, y])) return false;
             return Map[x, y].CanMove;
         }
+
         #region 类型
+
         public class BranchPools
         {
             private List<Branch> Actives = new List<Branch>();
@@ -356,6 +412,7 @@ namespace YuoTools
                 {
                     ItemTemp = CreatItem();
                 }
+
                 Actives.Add(ItemTemp);
                 ItemTemp.Init(parent);
                 return ItemTemp;
@@ -370,27 +427,34 @@ namespace YuoTools
                 return new Branch();
             }
         }
+
+        [Serializable]
         public class Branch
         {
             /// <summary>
             /// 这条分支的路径
             /// </summary>
             public List<YuoGrid> Path;
+
             public int Endx;
             public int Endy;
+
             public Branch()
             {
                 Path = new List<YuoGrid>();
             }
+
             public YuoGrid Now()
             {
                 return Path[Path.Count - 1];
             }
+
             public void Add(YuoGrid grid)
             {
                 Path.Add(grid);
                 grid.IsMoved = true;
             }
+
             public void Init(Branch parent)
             {
                 if (parent != null)
@@ -411,15 +475,16 @@ namespace YuoTools
         {
             public int x;
             public int y;
+
             /// <summary>
             /// 显示的时候标记用的,可以删
             /// </summary>
             public bool Tag;
+
             public bool CanMove;
             public bool IsMoved;
         }
 
         #endregion
-
     }
 }

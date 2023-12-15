@@ -21,7 +21,7 @@ namespace YuoTools
     public delegate float FloatAction<T>(T t);
 
     public delegate double DoubleAction<T>(T t);
-    
+
     public delegate decimal DecimalAction<T>(T t);
 
     public delegate long LongAction<T>(T t);
@@ -64,37 +64,37 @@ namespace YuoTools
     /// <summary>
     /// dic嵌套list
     /// </summary>
-    /// <typeparam name="K"></typeparam>
-    /// <typeparam name="V"></typeparam>
+    /// <typeparam name="TK"></typeparam>
+    /// <typeparam name="TV"></typeparam>
     [Serializable]
-    public class DicList<K, V> : Dictionary<K, List<V>>
+    public class DicList<TK, TV> : Dictionary<TK, List<TV>>
     {
-        private readonly List<V> _empty = new List<V>();
+        private readonly List<TV> _empty = new List<TV>();
 
-        public V[] Copy(K t)
+        public TV[] Copy(TK t)
         {
             TryGetValue(t, out var list);
-            return list == null ? Array.Empty<V>() : list.ToArray();
+            return list == null ? Array.Empty<TV>() : list.ToArray();
         }
 
-        public new List<V> this[K t] => TryGetValue(t, out var list) ? list : _empty;
+        public new List<TV> this[TK t] => TryGetValue(t, out var list) ? list : _empty;
 
-        public void AddItem(K t, V k)
+        public void AddItem(TK t, TV k)
         {
             if (!TryGetValue(t, out var list))
             {
-                list = new List<V>();
+                list = new List<TV>();
                 Add(t, list);
             }
 
             list.Add(k);
         }
 
-        public bool RemoveItem(K t, V k)
+        public bool RemoveItem(TK t, TV k)
         {
             if (!TryGetValue(t, out var list))
             {
-                Add(t, new List<V>());
+                Add(t, new List<TV>());
                 return false;
             }
 
@@ -107,9 +107,9 @@ namespace YuoTools
             return false;
         }
 
-        public List<V> GetAll()
+        public List<TV> GetAll()
         {
-            List<V> values = new();
+            List<TV> values = new();
             foreach (var item in this)
             {
                 values.AddRange(item.Value);
@@ -118,7 +118,7 @@ namespace YuoTools
             return values;
         }
 
-        public new bool Remove(K t)
+        public new bool Remove(TK t)
         {
             if (!ContainsKey(t))
             {
@@ -127,31 +127,6 @@ namespace YuoTools
 
             Remove(t);
             return true;
-        }
-    }
-
-    public class YuoDictionary<TK, TV> : Dictionary<TK, TV>
-    {
-        List<TK> _keys = new();
-        List<TV> _values = new();
-
-        public new TV this[TK key]
-        {
-            get => this[key];
-            set => this[key] = value;
-        }
-
-        public TK this[TV value]
-        {
-            get
-            {
-                _keys = new List<TK>(this.Keys);
-                _values = new List<TV>(this.Values);
-                var index = _values.FindIndex(x => x.Equals(value));
-                if (index < 0)
-                    throw new KeyNotFoundException();
-                return _keys[index];
-            }
         }
     }
 
@@ -269,6 +244,99 @@ namespace YuoTools
             Clear();
             for (var i = 0; i < mKeys.Count; ++i)
                 Add(mKeys[i], mValues[i]);
+        }
+    }
+
+    public class PriorityQueue<T> where T : IComparable<T>
+    {
+        private T[] queue;
+        private int count;
+        private Func<T, T, bool> cmp;
+
+        public PriorityQueue(int capacity = 100, Func<T, T, bool> cmp = null)
+        {
+            this.queue = new T[capacity];
+            this.count = 0;
+            this.cmp = cmp ?? ((x, y) => x.CompareTo(y) < 0);
+        }
+
+        public int Count => count;
+
+        public T Peek()
+        {
+            if (count == 0)
+            {
+                throw new InvalidOperationException("队列为空");
+            }
+
+            return queue[1];
+        }
+
+        public void Enqueue(T val)
+        {
+            count++;
+            if (count == queue.Length)
+            {
+                T[] tmp = new T[queue.Length * 2];
+                for (int i = 0; i < count; i++)
+                {
+                    tmp[i] = queue[i];
+                }
+
+                queue = tmp;
+            }
+
+            queue[count] = val;
+            Swim(count);
+        }
+
+        public T Dequeue()
+        {
+            if (count == 0)
+            {
+                throw new InvalidOperationException("队列为空");
+            }
+
+            T val = queue[1];
+            queue[1] = queue[count];
+            queue[count] = default(T);
+            count--;
+            Sinking(1);
+            return val;
+        }
+
+        private void Swim(int index)
+        {
+            while (index > 1 && cmp(queue[index], queue[index / 2]))
+            {
+                Swap(index, index / 2);
+                index /= 2;
+            }
+        }
+
+        private void Sinking(int index)
+        {
+            while (index * 2 <= count)
+            {
+                int child = index * 2;
+                if (child + 1 <= count && cmp(queue[child + 1], queue[child]))
+                {
+                    child++;
+                }
+
+                if (!cmp(queue[index], queue[child]))
+                {
+                    break;
+                }
+
+                Swap(index, child);
+                index = child;
+            }
+        }
+
+        private void Swap(int x, int y)
+        {
+            (queue[x], queue[y]) = (queue[y], queue[x]);
         }
     }
 }

@@ -43,7 +43,6 @@ namespace AStar_Yuri_bk0717
         private void Start()
         {
             p_position = this.gameObject.transform.position;
-            IsWall = false;
         }
         /*/// <summary>
         /// 构造函数

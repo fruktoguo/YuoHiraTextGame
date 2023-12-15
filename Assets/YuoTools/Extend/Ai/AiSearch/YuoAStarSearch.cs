@@ -40,25 +40,6 @@ public class YuoAStarSearch
         }
     }
 
-    public List<YuoGrid> Search(Vector2Int startPos, Vector2Int endPos)
-    {
-        Search(startPos.x, startPos.y, endPos.x, endPos.y);
-        YuoGrid end = Map[MapSizeX - 1, MapSizeY - 1];
-        if (end.Parent == null)
-        {
-            return null;
-        }
-
-        List<YuoGrid> path = new List<YuoGrid>();
-        while (end.Parent != null)
-        {
-            end = end.Parent;
-            path.Add(end);
-        }
-
-        return path;
-    }
-
     void ResetMap()
     {
         foreach (var item in Map)
@@ -75,13 +56,12 @@ public class YuoAStarSearch
 
     private bool Search(int startX, int startY, int targetX, int targetY)
     {
-        StopwatchHelper.Start();
         ResetMap();
         YuoGrid startYuoGrid = Map[startX, startY];
         YuoGrid endYuoGrid = Map[targetX, targetY];
         Min = startYuoGrid;
-        Open(startYuoGrid, null);
-
+        Open(startYuoGrid, null, endYuoGrid);
+        StopwatchHelper.Start();
         int maxSearchNum = MapSizeX * MapSizeY * 100;
 
         while (openQueue.Count > 0)
@@ -93,7 +73,7 @@ public class YuoAStarSearch
                 return false;
             }
 
-            FindNeighbors(Min);
+            FindNeighbors(Min, endYuoGrid);
             Close(Min);
             if (endYuoGrid.Open)
             {
@@ -116,6 +96,7 @@ public class YuoAStarSearch
 
         if (!Search(start.x, start.y, end.x, end.y))
         {
+            Debug.LogError("无法找到路径");
             return new();
         }
 
@@ -131,27 +112,24 @@ public class YuoAStarSearch
     }
 
 
-    private void FindNeighbors(YuoGrid grid)
+    private void FindNeighbors(YuoGrid grid, YuoGrid end)
     {
         for (int x = -1; x < 2; x++)
         {
             for (int y = -1; y < 2; y++)
             {
-                //????????
                 if (x == 0 && y == 0)
                     continue;
-                //??????????
                 if (!(grid.X + x).InRange(0, MapSizeX - 1) || !(grid.Y + y).InRange(0, MapSizeY - 1))
                     continue;
                 var gridTemp = Map[grid.X + x, grid.Y + y];
-                //????????
                 if (!gridTemp.CanMove)
                     continue;
                 if (gridTemp.Open || gridTemp.Close)
                     continue;
                 if (x != y && x != -y)
                 {
-                    Open(gridTemp, grid);
+                    Open(gridTemp, grid, end);
                 }
                 else if (true)
                 {
@@ -163,14 +141,14 @@ public class YuoAStarSearch
 
     public YuoGrid Min;
 
-    public void Open(YuoGrid grid, YuoGrid parent)
+    public void Open(YuoGrid grid, YuoGrid parent, YuoGrid end)
     {
         if (grid.Open == false)
         {
             openQueue.Enqueue(grid);
         }
 
-        grid.OpenGrid(parent);
+        grid.OpenGrid(parent, end);
         grid.Open = true;
         grid.Close = false;
         if (grid.F < Min.F)
@@ -213,7 +191,7 @@ public class YuoAStarSearch
 
         public YuoGrid Parent;
 
-        public void OpenGrid(YuoGrid parent)
+        public void OpenGrid(YuoGrid parent, YuoGrid target)
         {
             if (parent == null)
                 return;
@@ -227,7 +205,7 @@ public class YuoAStarSearch
             else
                 G = parent.G + 10;
 
-            H = (int)Mathf.Sqrt(wi * wi + he * he) * 10;
+            H = (Mathf.Abs(X - target.X) + Mathf.Abs(Y - target.Y)) * 10;
             F = G + H;
         }
     }

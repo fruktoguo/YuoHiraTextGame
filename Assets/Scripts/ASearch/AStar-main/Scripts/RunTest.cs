@@ -53,7 +53,7 @@ namespace AStar_Yuri_bk0717
                 {
                     for (var y = 0; y < mapMeshCreate.m_Popo.GetLength(1); y++)
                     {
-                        map[x, y] = mapMeshCreate.m_Popo[x, y].IsWall ? 1: 0;
+                        map[x, y] = mapMeshCreate.m_Popo[x, y].IsWall ? 1 : 0;
                         map[x, y].Log();
                     }
                 }
@@ -61,13 +61,13 @@ namespace AStar_Yuri_bk0717
                 YuoAStarSearch yuoAStarSearch = new YuoAStarSearch(map);
                 var result =
                     yuoAStarSearch.Search(new YuoVector2Int(start.X, start.Z), new YuoVector2Int(end.X, end.Z));
-                
+
                 foreach (var yuoVector2Int in result)
                 {
                     var point = mapMeshCreate.m_Popo[yuoVector2Int.x, yuoVector2Int.y];
                     point.ChangeColor(Color.green);
                 }
-                
+
                 AStarWrapper aStarWrapper = new AStarWrapper();
                 //2. 调用算法初始化
                 aStarWrapper.Init(mapMeshCreate, start, end);
@@ -78,6 +78,8 @@ namespace AStar_Yuri_bk0717
             }
         }
 
+        public YuoVector2Int MapSize = new(10, 10);
+
         /// <summary>
         /// 运行，调用mapMeshCreate的生成地图
         /// </summary>
@@ -85,9 +87,10 @@ namespace AStar_Yuri_bk0717
         {
             //建立委托事件绑定
             mapMeshCreate.PointEvent = PointEvent;
-            //生成地图
             mapMeshCreate.CreateMap();
         }
+
+        private int[,] map;
 
         /// <summary>
         /// 重载mapMeshCreate的pointEvent执行方法，通过委托传入
@@ -99,12 +102,16 @@ namespace AStar_Yuri_bk0717
         {
             //1.下面要随机生成障碍了，先取到方块的point组件
             Point point = go.GetComponent<Point>();
+            int x = point.X;
+            int y = point.Z;
+            int r = map[x, y];
             //2. 根据障碍生成频率，来确定当前这个物体是否改颜色
-            float f = Random.Range(0, 1.0f);
-            Color color = f <= probability ? Color.red : Color.white;
+            // float f = Random.Range(0, 1.0f);
+            Color color = r == 1 ? Color.red : Color.white;
             //3. 初始化对象
             point.ChangeColor(color);
-            point.IsWall = f <= probability;
+            // point.IsWall = f <= probability;
+            point.IsWall = r == 1;
             point.X = row;
             point.Z = column;
 
