@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using YuoTools;
-using YuoTools.Extend.YuoMathf;
+using YuoTools.Extend.MathFunction;
 
 namespace AStar_Yuri_bk0717
 {
@@ -58,15 +58,15 @@ namespace AStar_Yuri_bk0717
                     }
                 }
 
-                YuoAStarSearch yuoAStarSearch = new YuoAStarSearch(map);
-                var result =
-                    yuoAStarSearch.Search(new YuoVector2Int(start.X, start.Z), new YuoVector2Int(end.X, end.Z));
-
-                foreach (var yuoVector2Int in result)
-                {
-                    var point = mapMeshCreate.m_Popo[yuoVector2Int.x, yuoVector2Int.y];
-                    point.ChangeColor(Color.green);
-                }
+                // YuoAStarSearch yuoAStarSearch = new YuoAStarSearch(map);
+                // var result =
+                //     yuoAStarSearch.Search(new YuoVector2Int(start.X, start.Z), new YuoVector2Int(end.X, end.Z));
+                //
+                // foreach (var yuoVector2Int in result)
+                // {
+                //     var point = mapMeshCreate.m_Popo[yuoVector2Int.x, yuoVector2Int.y];
+                //     point.ChangeColor(Color.green);
+                // }
 
                 AStarWrapper aStarWrapper = new AStarWrapper();
                 //2. 调用算法初始化
@@ -78,7 +78,7 @@ namespace AStar_Yuri_bk0717
             }
         }
 
-        public YuoVector2Int MapSize = new(10, 10);
+        public YuoInt2 MapSize = new(10, 10);
 
         /// <summary>
         /// 运行，调用mapMeshCreate的生成地图

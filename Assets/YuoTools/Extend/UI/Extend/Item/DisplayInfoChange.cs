@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using YuoTools;
+using YuoTools.Extend.UI.Extend.Item;
 
 public class DisplayInfoChange : MonoBehaviour
 {

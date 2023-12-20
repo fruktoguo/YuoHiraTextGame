@@ -12,12 +12,13 @@ public class YuoDrawTool : MonoBehaviour
     private RectTransform layerRoot;
 
     public YuoDrawLayerManager LayerManager { get; set; }
-    
+
     private bool isInit;
 
     private void Awake()
     {
-        if(!isInit) Init();
+        if (!isInit) Init();
+        AddLayer();
     }
 
     public void SetColor(Color color)
@@ -35,23 +36,24 @@ public class YuoDrawTool : MonoBehaviour
         "DrawToolInit".Log();
         isInit = true;
         layerRoot = transform.Find("Layers") as RectTransform;
+        LayerManager = transform.Find("Tools/LayerManager").GetComponent<YuoDrawLayerManager>();
     }
 
     [Button]
     public void AddLayer()
     {
-        Init();
+        if (!isInit) Init();
         var go = new GameObject($"Layer_{Layers.Count}", typeof(DrawingBoard), typeof(RectTransform));
         var rect = go.GetComponent<RectTransform>();
         var board = go.GetComponent<DrawingBoard>();
 
         SetLayerRectTransform(rect);
         SetBoardComponent(board, go, rect);
-        
+
         Layers.Add(board);
         LayerManager.AddLayerPreview(board);
     }
-  
+
     private void SetLayerRectTransform(RectTransform rectTransform)
     {
         rectTransform.SetParent(layerRoot);
@@ -81,4 +83,4 @@ public class YuoDrawTool : MonoBehaviour
     {
         LayerManager.CurrentLayer.LayerScale = scale;
     }
-}  
+}

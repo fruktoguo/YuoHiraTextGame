@@ -4,7 +4,7 @@ using Unity.Mathematics;
 using UnityEngine.Pool;
 using YuoTools.Extend.Helper;
 using YuoTools.Extend.OtherTools;
-using YuoTools.Extend.YuoMathf;
+using YuoTools.Extend.MathFunction;
 using YuoTools.Main.Ecs;
 
 namespace YuoTools.UI

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using YuoTools.Extend.YuoMathf;
+using YuoTools.Extend.MathFunction;
 
 namespace YuoTools
 {
@@ -10,8 +10,8 @@ namespace YuoTools
         private static int col; //迷宫的列
         private static int totalPointsCount;
         private static int pointsCount;
-        private static YuoVector2Int startPoint; //迷宫的起点坐标
-        private static YuoVector2Int endPoint; //迷宫的终点坐标
+        private static YuoInt2 startPoint; //迷宫的起点坐标
+        private static YuoInt2 endPoint; //迷宫的终点坐标
         private static int[,] mapList; //迷宫的二维数组
 
         enum Direction
@@ -25,7 +25,7 @@ namespace YuoTools
         //0代表未标记点
         //1代表墙
         //2代表已标记点
-        public static int[,] GenerateMap(int width, int height, YuoVector2Int startPointer, YuoVector2Int endPointer)
+        public static int[,] GenerateMap(int width, int height, YuoInt2 startPointer, YuoInt2 endPointer)
         {
             var w = (width + 1) / 2;
             var h = (height + 1) / 2;
@@ -49,7 +49,7 @@ namespace YuoTools
             }
 
             startPoint = startPointer + 1;
-            endPoint = endPointer + 1;
+            endPoint = endPointer - 1;
             pointsCount = 1;
             mapList[startPoint.x, startPoint.y] = 2;
             Dfs(startPoint);
@@ -68,11 +68,13 @@ namespace YuoTools
                     }
                 }
             }
+            mapList[startPoint.x, startPoint.y] = 0;
+            mapList[endPoint.x, endPoint.y] = 0;
             
             return mapList;
         }
 
-        private static void Dfs(YuoVector2Int currentPoint)
+        private static void Dfs(YuoInt2 currentPoint)
         {
             if (pointsCount == totalPointsCount || currentPoint == endPoint)
             {
@@ -86,7 +88,7 @@ namespace YuoTools
                 if (accessDir.Count > 0)
                 {
                     int randomIndex = Random.Range(0, accessDir.Count); // 随机选择一个方向
-                    YuoVector2Int nextPoint = OpenUp(currentPoint, (Direction)accessDir[randomIndex]); //打通墙
+                    YuoInt2 nextPoint = OpenUp(currentPoint, (Direction)accessDir[randomIndex]); //打通墙
                     pointsCount++;
                     accessDir.RemoveAt(randomIndex);
                     Dfs(nextPoint);
@@ -98,12 +100,12 @@ namespace YuoTools
             }
         }
 
-        private static void HasAccess(List<int> dirList, YuoVector2Int currentPoint)
+        private static void HasAccess(List<int> dirList, YuoInt2 currentPoint)
         {
             dirList.Clear();
             for (int i = (int)Direction.Up; i <= (int)Direction.Left; i++)
             {
-                YuoVector2Int neighborPoint = GetNeighborPoint(currentPoint, (Direction)i);
+                YuoInt2 neighborPoint = GetNeighborPoint(currentPoint, (Direction)i);
                 if (neighborPoint.x > 0 && neighborPoint.x < row)
                 {
                     if (neighborPoint.y > 0 && neighborPoint.y < col)
@@ -117,26 +119,26 @@ namespace YuoTools
             }
         }
 
-        private static YuoVector2Int GetNeighborPoint(YuoVector2Int currentPoint, Direction direction)
+        private static YuoInt2 GetNeighborPoint(YuoInt2 currentPoint, Direction direction)
         {
             switch (direction)
             {
                 case Direction.Up:
-                    return new YuoVector2Int(currentPoint.x, currentPoint.y - 2);
+                    return new YuoInt2(currentPoint.x, currentPoint.y - 2);
                 case Direction.Right:
-                    return new YuoVector2Int(currentPoint.x + 2, currentPoint.y);
+                    return new YuoInt2(currentPoint.x + 2, currentPoint.y);
                 case Direction.Down:
-                    return new YuoVector2Int(currentPoint.x, currentPoint.y + 2);
+                    return new YuoInt2(currentPoint.x, currentPoint.y + 2);
                 case Direction.Left:
-                    return new YuoVector2Int(currentPoint.x - 2, currentPoint.y);
+                    return new YuoInt2(currentPoint.x - 2, currentPoint.y);
                 default:
-                    return new YuoVector2Int(0, 0);
+                    return new YuoInt2(0, 0);
             }
         }
 
-        private static YuoVector2Int OpenUp(YuoVector2Int currentPoint, Direction direction)
+        private static YuoInt2 OpenUp(YuoInt2 currentPoint, Direction direction)
         {
-            YuoVector2Int nextPoint = GetNeighborPoint(currentPoint, direction);
+            YuoInt2 nextPoint = GetNeighborPoint(currentPoint, direction);
             mapList[nextPoint.x, nextPoint.y] = 2;
             switch (direction)
             {

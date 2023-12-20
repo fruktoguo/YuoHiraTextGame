@@ -15,53 +15,43 @@ MonoBehaviour:
   m_SharedTableData: {fileID: 11400000, guid: de948a238f005284ea155726521e9366, type: 2}
   m_Tables:
   - {fileID: 11400000, guid: 1e442db1dd73a3943a3169ef08f3f85e, type: 2}
-  - {fileID: 11400000, guid: 578dc3b10734f9445b57d56fa836a033, type: 2}
   - {fileID: 11400000, guid: 2909489d0fcd5184199503d21e81225e, type: 2}
   m_Extensions:
-  - rid: 6097987423455674399
+  - rid: 9016369640113963017
   m_Group: String Table
   references:
     version: 2
     RefIds:
-    - rid: 6097987423455674399
+    - rid: 9016369640113963017
       type: {class: CsvExtension, ns: UnityEditor.Localization.Plugins.CSV, asm: Unity.Localization.Editor}
       data:
         m_Collection: {fileID: 11400000}
         m_ColumnsList:
-        - rid: 6097987423455674400
-        - rid: 6097987423455674401
-        - rid: 6097987423455674402
-        - rid: 6097987423455674403
-        m_ConnectedFile: Assets/Localization/Main.csv
-    - rid: 6097987423455674400
+        - rid: 9016369640113963051
+        - rid: 9016369640113963052
+        - rid: 9016369640113963053
+        m_ConnectedFile: Assets/StreamingAssets/Language/Main.csv
+    - rid: 9016369640113963051
       type: {class: KeyIdColumns, ns: UnityEditor.Localization.Plugins.CSV.Columns, asm: Unity.Localization.Editor}
       data:
-        m_IncludeId: 1
-        m_IncludeSharedComments: 1
+        m_IncludeId: 0
+        m_IncludeSharedComments: 0
         m_KeyFieldName: Key
         m_IdFieldName: Id
         m_CommentFieldName: Shared Comments
-    - rid: 6097987423455674401
+    - rid: 9016369640113963052
       type: {class: LocaleColumns, ns: UnityEditor.Localization.Plugins.CSV.Columns, asm: Unity.Localization.Editor}
       data:
         m_LocaleIdentifier:
           m_Code: zh-hans
         m_FieldName: Chinese (Simplified)(zh-hans)
         m_CommentFieldName: Chinese (Simplified)(zh-hans) Comments
-        m_IncludeComments: 1
-    - rid: 6097987423455674402
-      type: {class: LocaleColumns, ns: UnityEditor.Localization.Plugins.CSV.Columns, asm: Unity.Localization.Editor}
-      data:
-        m_LocaleIdentifier:
-          m_Code: zh-hant
-        m_FieldName: Chinese (Traditional)(zh-hant)
-        m_CommentFieldName: Chinese (Traditional)(zh-hant) Comments
-        m_IncludeComments: 1
-    - rid: 6097987423455674403
+        m_IncludeComments: 0
+    - rid: 9016369640113963053
       type: {class: LocaleColumns, ns: UnityEditor.Localization.Plugins.CSV.Columns, asm: Unity.Localization.Editor}
       data:
         m_LocaleIdentifier:
           m_Code: en
         m_FieldName: English(en)
         m_CommentFieldName: English(en) Comments
-        m_IncludeComments: 1
+        m_IncludeComments: 0

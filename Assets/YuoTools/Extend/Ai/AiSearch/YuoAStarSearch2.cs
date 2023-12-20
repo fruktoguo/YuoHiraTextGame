@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using YuoTools.Extend.YuoMathf;
+using YuoTools.Extend.MathFunction;
 
 public class YuoAStarSearch2
 {
@@ -15,7 +15,7 @@ public class YuoAStarSearch2
         closeList = new List<Node>();
     }
 
-    public List<Node> FindPath(YuoVector2Int start, YuoVector2Int end, bool ignoreCorner = true)
+    public List<Node> FindPath(YuoInt2 start, YuoInt2 end, bool ignoreCorner = true)
     {
         var startNode = new Node(start);
         var endNode = new Node(end);
@@ -62,10 +62,10 @@ public class YuoAStarSearch2
         return null;
     }
 
-    public List<YuoVector2Int> GetAllPathPoints(YuoVector2Int start, YuoVector2Int end, bool ignoreCorner = true)
+    public List<YuoInt2> GetAllPathPoints(YuoInt2 start, YuoInt2 end, bool ignoreCorner = true)
     {
         List<Node> path = FindPath(start, end, ignoreCorner);
-        List<YuoVector2Int> pathPoints = new List<YuoVector2Int>();
+        List<YuoInt2> pathPoints = new List<YuoInt2>();
         if (path != null)
         {
             foreach (Node node in path)
@@ -164,13 +164,13 @@ public class YuoAStarSearch2
 
 public class Node
 {
-    public YuoVector2Int pos;
+    public YuoInt2 pos;
     public Node parent;
     public int f;
     public int g;
     public int h;
 
-    public Node(YuoVector2Int pos)
+    public Node(YuoInt2 pos)
     {
         this.pos = pos;
     }

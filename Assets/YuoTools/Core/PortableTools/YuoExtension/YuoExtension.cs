@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace YuoTools
 {
@@ -854,6 +856,22 @@ namespace YuoTools
         public static void Adds<T>(this List<T> list, params T[] t)
         {
             list.AddRange(t);
+        }
+        
+        public static void DisposableAll(this List<System.IDisposable> list)
+        {
+            foreach (var t in list)
+            {
+                t.Dispose();
+            }
+        }
+        
+        public static void DisposeAll(this System.IDisposable[] array)
+        {
+            foreach (var t in array)
+            {
+                t.Dispose();
+            }
         }
 
         #endregion

@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using YuoTools;
 using YuoTools.Extend.Helper;
-using YuoTools.Extend.YuoMathf;
+using YuoTools.Extend.MathFunction;
 
 public class YuoAStarSearch
 {
@@ -61,9 +61,10 @@ public class YuoAStarSearch
         YuoGrid endYuoGrid = Map[targetX, targetY];
         Min = startYuoGrid;
         Open(startYuoGrid, null, endYuoGrid);
-        StopwatchHelper.Start();
+        // StopwatchHelper.Start();
         int maxSearchNum = MapSizeX * MapSizeY * 100;
 
+        double ms;
         while (openQueue.Count > 0)
         {
             maxSearchNum--;
@@ -77,17 +78,18 @@ public class YuoAStarSearch
             Close(Min);
             if (endYuoGrid.Open)
             {
-                var ms = StopwatchHelper.Stop();
-                Debug.Log($"运行结束,总共计算{MapSizeX * MapSizeY * 100 - maxSearchNum}次,耗时{ms}毫秒");
+                // ms = StopwatchHelper.Stop();
+                // Debug.Log($"AStar运行成功,总共计算{MapSizeX * MapSizeY * 100 - maxSearchNum}次,耗时{ms}毫秒");
                 return true;
             }
         }
-
-        StopwatchHelper.Stop();
+        // ms = StopwatchHelper.Stop();
+        // Debug.Log($"AStar运行失败,总共计算{MapSizeX * MapSizeY * 100 - maxSearchNum}次,耗时{ms}毫秒");
+        // StopwatchHelper.Stop();
         return false;
     }
 
-    public List<YuoVector2Int> Search(YuoVector2Int start, YuoVector2Int end)
+    public List<YuoInt2> Search(YuoInt2 start, YuoInt2 end)
     {
         if (start.x < 0 || start.x >= MapSizeX || start.y < 0 || start.y >= MapSizeY)
         {
@@ -101,7 +103,7 @@ public class YuoAStarSearch
         }
 
         var endNode = Map[end.x, end.y];
-        List<YuoVector2Int> path = new();
+        List<YuoInt2> path = new();
         while (endNode.Parent != null)
         {
             endNode = endNode.Parent;
@@ -161,7 +163,7 @@ public class YuoAStarSearch
 
     void Close(YuoGrid grid)
     {
-        if (grid.Open == true)
+        if (grid.Open)
         {
             openQueue.Dequeue();
             if (openQueue.Count > 0)

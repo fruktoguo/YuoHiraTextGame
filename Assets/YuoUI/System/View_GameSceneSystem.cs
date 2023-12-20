@@ -2,7 +2,7 @@
 using DG.Tweening;
 using UnityEngine;
 using YuoTools.Extend.Helper;
-using YuoTools.Extend.YuoMathf;
+using YuoTools.Extend.MathFunction;
 using YuoTools.Main.Ecs;
 
 namespace YuoTools.UI
@@ -11,7 +11,7 @@ namespace YuoTools.UI
     {
         public List<View_MapGridComponent> MapGridComponents = new();
 
-        public void AddMapGridComponent(string name, YuoVector2 position, float size)
+        public void AddMapGridComponent(string name, YuoFloat2 position, float size)
         {
             var mapItem = AddChildAndInstantiate(Child_MapGrid);
             mapItem.Entity.EntityName = name;
@@ -19,7 +19,7 @@ namespace YuoTools.UI
             mapItem.SetGridData(name, position, size);
         }
 
-        public static void AddMapItem(string name, YuoVector2 position, float size) => UIManagerComponent.Get
+        public static void AddMapItem(string name, YuoFloat2 position, float size) => UIManagerComponent.Get
             .GetUIView<View_GameSceneComponent>().AddMapGridComponent(name, position, size);
     }
 

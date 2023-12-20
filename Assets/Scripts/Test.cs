@@ -1,58 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Runtime.CompilerServices;
 using Sirenix.OdinInspector;
+using Unity.Burst;
 using Unity.Collections;
+using Unity.Jobs;
 using UnityEditor.Localization;
+using UnityEditor.Localization.Plugins.CSV;
 using UnityEditor.Scripting.Python;
 using UnityEngine;
-using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
 using YuoTools;
 using YuoTools.Extend.Helper;
-using YuoTools.Main.Ecs;
+using static Unity.Collections.BurstCompatibleAttribute.BurstCompatibleCompileTarget;
 using Debug = UnityEngine.Debug;
 
 public class Test : MonoBehaviour
 {
     public int Num = 100000;
+    public int Num2 = 100000;
 
     private Stopwatch sp = new();
 
     public StringTableCollection TableCollection;
 
-    private void Start()
-    {
-        // IpcHelper.Listen();
-        // IpcHelper.MessageReceived += message => message.Log();
-    }
-
-    private void OnDestroy()
-    {
-        IpcHelper.Destroy();
-    }
-
-    public Vector3 t1;
-    public Transform tran1;
-    public Transform tran2;
-    public Transform tran3;
-    public Transform tran4;
-    public Transform tran5;
-
-    [Button]
     public void Test1()
     {
-        tran1.position = t1;
-        tran2.position = Vector3.ProjectOnPlane(t1, Vector3.up);
-        print(Vector3.Angle(tran1.position, tran2.position));
-        var qua1 = Quaternion.LookRotation(tran1.position);
-
-        var qua2 = Quaternion.LookRotation(tran2.position);
-        var f2 = Quaternion.Inverse(qua1) * qua2;
-        tran3.rotation = (qua2 * f2);
-        tran4.rotation = qua1;
-        tran5.rotation = qua2;
-        print((qua1.eulerAngles, qua2.eulerAngles, f2.eulerAngles, (qua1 * f2).eulerAngles));
     }
 
     public Transform target;
@@ -67,27 +43,130 @@ public class Test : MonoBehaviour
     }
 
     //性能测试
-    [Button]
-    public void TestTime()
+    public async void TestTime()
     {
-        // Debug.ClearDeveloperConsole();
+        Debug.ClearDeveloperConsole();
+        double time = 0;
+        StopwatchHelper.Start();
+        for (int i = 0; i < Num; i++)
+        {
+            Add1(999, 1);
+        }
+
+        time = StopwatchHelper.Stop();
+
+        Debug.Log($"传统方法耗时{time}ms");
+
+        StopwatchHelper.Start();
+        for (int i = 0; i < Num; i++)
+        {
+            Add2(999, 1);
+        }
+
+        time = StopwatchHelper.Stop();
+
+        Debug.Log($"Burst方法耗时{time}ms");
+
+        StopwatchHelper.Start();
+        for (int i = 0; i < Num; i++)
+        {
+            Add3(999, 1);
+        }
+
+        time = StopwatchHelper.Stop();
+
+        Debug.Log($"Inline方法耗时{time}ms");
+
+        StopwatchHelper.Start();
+        Add4();
+        time = StopwatchHelper.Stop();
+        Debug.Log($"Job方法耗时{time}ms");
+
         // ListAddTest().Log();
         // NativeListAddTest().Log();
         // ListFindTest().Log();
         // NativeListFindTest().Log();
         // ListRemoveTest().Log();
         // NativeListRemoveTest().Log();
-        // TableCollection.GetTable("Test_1").Log().LocaleIdentifier.Log().Code.Log();
-        // foreach (var tableCollectionStringTable in TableCollection.StringTables)
-        // {
-        //     foreach (var stringTableEntry in tableCollectionStringTable.Values)
-        //     {
-        //         $"{stringTableEntry.Key}_{stringTableEntry.Value}".Log();
-        //     }
-        // }
     }
 
     [Button]
+    public void LocalizationTest()
+    {
+        StringTable table = LocalizationSettings.StringDatabase.GetTable("Main");
+        table.GetEntry("Test_1").Value.Log();
+    }
+
+    [FilePath] public string TextPath;
+
+    [Button]
+    public void CsvTest()
+    {
+        var fs = new FileStream(TextPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        Csv.ImportInto(new StreamReader(fs), TableCollection);
+    }
+
+    public void Add1(double a, double b)
+    {
+        double precision = 0.000001;
+        while (Math.Abs(a - b * b) > precision)
+        {
+            b = (b + a / b) / 2;
+        }
+    }
+
+    [BurstCompatible(CompileTarget = PlayerAndEditor)]
+    public void Add2(double a, double b)
+    {
+        double precision = 0.000001;
+        while (Math.Abs(a - b * b) > precision)
+        {
+            b = (b + a / b) / 2;
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Add3(double a, double b)
+    {
+        double precision = 0.000001;
+        while (Math.Abs(a - b * b) > precision)
+        {
+            b = (b + a / b) / 2;
+        }
+    }
+
+    public void Add4()
+    {
+        NativeList<JobHandle> handles = new NativeList<JobHandle>(Allocator.Temp);
+        for (int i = 0; i < Num2; i++)
+        {
+            handles.Add(new MyJob { num = Num }.Schedule());
+        }
+
+        JobHandle.CompleteAll(handles);
+        handles.Dispose();
+    }
+
+    [BurstCompile(CompileSynchronously = true)]
+    private struct MyJob : IJob
+    {
+        public double num;
+
+        public void Execute()
+        {
+            for (double i = 0; i < num; i++)
+            {
+                double precision = 0.000001;
+                double a = 999;
+                double b = 1;
+                while (Math.Abs(a - b * b) > precision)
+                {
+                    b = (b + a / b) / 2;
+                }
+            }
+        }
+    }
+
     public void RunPy(TextAsset text)
     {
         PythonRunner.RunString(text.text);

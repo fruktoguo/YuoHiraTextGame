@@ -3,7 +3,7 @@ using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using YuoTools.Extend.Helper;
-using YuoTools.Extend.YuoMathf;
+using YuoTools.Extend.MathFunction;
 using YuoTools.Main.Ecs;
 
 namespace YuoTools.UI
@@ -12,7 +12,7 @@ namespace YuoTools.UI
     {
         [ShowInInspector] public MapGridData GridData { get; private set; }
 
-        public void SetGridData(string name, YuoVector2 position, float size)
+        public void SetGridData(string name, YuoFloat2 position, float size)
         {
             GridData = AddComponent<MapGridData>();
             GridData.Name = name;
@@ -47,7 +47,7 @@ namespace YuoTools.UI
     public class MapGridData : YuoComponent
     {
         public string Name = "未知地点";
-        public YuoVector2 Position;
+        public YuoFloat2 Position;
         public float Size = 1;
     }
 

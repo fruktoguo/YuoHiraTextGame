@@ -116,5 +116,18 @@ namespace YuoTools.Extend.Helper
 
             return new Vector3(x, y, z) * Mathf.Rad2Deg;
         }
+
+        /// <summary>
+        /// 巴比伦法求平方根
+        /// </summary>
+        public static double Sqrt(double number, double guess = 1.0)
+        {
+            double precision = 0.000001;
+            while (Math.Abs(number - guess * guess) > precision)
+            {
+                guess = (guess + number / guess) / 2;
+            }
+            return guess;
+        }
     }
 }

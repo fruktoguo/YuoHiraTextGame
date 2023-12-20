@@ -16,6 +16,11 @@ scopes = {
 	"last_search.45F317DD" = ""
 	"OpenInspectorPreview.45F317DD" = "0"
 	"currentGroup.45F317DD" = "all"
+	"picker_window_position_offset.45F3178B" = "205;631;320;550"
+	"picker_search_text.45F3178B" = ""
+	"last_search.45F3178B" = ""
+	"OpenInspectorPreview.45F3178B" = "0"
+	"currentGroup.45F3178B" = "all"
 }
 providers = {
 	find = {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using YuoTools.Extend.UI.Extend.Item;
 
 
 public class LocalizationLanguageSwitch : MonoBehaviour

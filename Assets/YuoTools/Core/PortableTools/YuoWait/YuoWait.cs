@@ -61,7 +61,7 @@ namespace YuoTools
         {
             await YuoAwait_Mono.Instance.WaitFrameAsync(frame);
         }
-        
+
 
         /// <summary>
         /// 用于await延迟--->无缩放
@@ -76,6 +76,34 @@ namespace YuoTools
         public static ETTask<T> ResourcesLoadAsync<T>(string path) where T : Object
         {
             return YuoAwait_Mono.Instance.ResourcesLoadAsync<T>(path);
+        }
+
+
+        public static async ETTask WaitInputKeyDownAsync(KeyCode keyCode)
+        {
+            await WaitFrameAsync(1);
+
+            while (!Input.GetKeyDown(keyCode))
+            {
+                await WaitFrameAsync(1);
+            }
+        }
+
+        public static async ETTask WaitInputKeyAsync(KeyCode keyCode)
+        {
+            await WaitFrameAsync(1);
+            while (!Input.GetKey(keyCode))
+            {
+                await WaitFrameAsync(1);
+            }
+        }
+
+        public static async ETTask WaitUntilAsync(Func<bool> condition)
+        {
+            while (!condition())
+            {
+                await WaitFrameAsync(1);
+            }
         }
     }
 }

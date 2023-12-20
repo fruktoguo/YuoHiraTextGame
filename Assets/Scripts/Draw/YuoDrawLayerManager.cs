@@ -37,6 +37,7 @@ namespace DefaultNamespace.Draw
                 CurrentLayerIndex = currentPreviewIndex;
             });
 
+            DrawingBoards.Add(board);
             LayerPreviews.Add(rawImage);
         }
     }
