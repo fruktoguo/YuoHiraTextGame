@@ -106,6 +106,20 @@ public class Test : MonoBehaviour
         Csv.ImportInto(new StreamReader(fs), TableCollection);
     }
 
+    public string num1;
+    public string num2;
+
+    [Button]
+    public void BigNumTest()
+    {
+        YuoBigNum b1 = num1;
+        YuoBigNum b2 = num2;
+        StopwatchHelper.Start();
+        var result = b1 * b2;
+        StopwatchHelper.Stop();
+        $"计算完成，结果为：{result}，耗时：{StopwatchHelper.Stop()}ms".Log();
+    }
+
     public void Add1(double a, double b)
     {
         double precision = 0.000001;

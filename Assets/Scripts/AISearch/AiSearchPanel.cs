@@ -173,7 +173,7 @@ public class AiSearchPanel : MonoBehaviour
         StopwatchHelper.Start();
         for (int i = 0; i < Num; i++)
         {
-            var data = YuoAStarSearchJobs.InitJob(map, startPos, endPos);
+            var data = YuoSearchJobsHelper.InitJob(map, startPos, endPos);
             jobs.Add(data.job.Schedule());
             disposables.AddRange(data.disposables);
         }

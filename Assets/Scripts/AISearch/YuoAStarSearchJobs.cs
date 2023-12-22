@@ -6,29 +6,10 @@ using Unity.Mathematics;
 using UnityEngine;
 using YuoTools;
 
-public class YuoAStarSearchJobs
+public class YuoSearchJobsHelper
 {
-    public static NativeArray<NativeArray<int>> GetMapData(int[,] map)
-    {
-        NativeArray<NativeArray<int>> mapData =
-            new NativeArray<NativeArray<int>>(map.GetLength(0), Allocator.Persistent);
-
-        for (int i = 0; i < map.GetLength(0); i++)
-        {
-            var nativeArray = new NativeArray<int>(map.GetLength(1), Allocator.Persistent);
-            for (int j = 0; j < map.GetLength(1); j++)
-            {
-                nativeArray[j] = map[i, j];
-            }
-
-            mapData[i] = nativeArray;
-        }
-
-        return mapData;
-    }
-
-    public static (NativeArray<MapNode> nodeMap, NativeQueue<MapNode> openQueue, NativeList<int2> result,
-        NativeArray<int2> startPosArray, NativeArray<int2> endPosArray, int width, int height) GetInitData(int[,] map,
+    public static (AStarSearchJob job, NativeList<int2> result, NativeArray<int> resultIndex, IDisposable[] disposables)
+        InitJob(int[,] map,
             Vector2Int[] startPos,
             Vector2Int[] endPos)
     {
@@ -44,59 +25,9 @@ public class YuoAStarSearchJobs
         }
 
         NativeQueue<MapNode> openQueue = new NativeQueue<MapNode>(Allocator.TempJob);
+
         var result = new NativeList<int2>(Allocator.TempJob);
-
-        var startPosArray = new NativeArray<int2>(startPos.Length, Allocator.TempJob);
-        for (int i = 0; i < startPos.Length; i++)
-        {
-            startPosArray[i] = new int2(startPos[i].x, startPos[i].y);
-        }
-
-        var endPosArray = new NativeArray<int2>(endPos.Length, Allocator.TempJob);
-        for (int i = 0; i < endPos.Length; i++)
-        {
-            endPosArray[i] = new int2(endPos[i].x, endPos[i].y);
-        }
-
-        return (nodeMap, openQueue, result, startPosArray, endPosArray, width, height);
-    }
-
-    public static AStarSearchJob CreateJob((NativeArray<MapNode> nodeMap, NativeQueue<MapNode> openQueue,
-        NativeList<int2> result, NativeArray<int2> startPosArray, NativeArray<int2> endPosArray, int width, int height)
-        data)
-    {
-        return new AStarSearchJob()
-        {
-            StartPosArray = data.startPosArray,
-            EndPosArray = data.endPosArray,
-            Min = new MapNode(int.MaxValue, int.MaxValue, false),
-            OpenQueue = data.openQueue,
-            Result = data.result,
-            NodeMap = data.nodeMap,
-            MapSizeX = data.width,
-            MapSizeY = data.height,
-            SearchIndex = 0
-        };
-    }
-
-
-    public static (AStarSearchJob job, NativeList<int2> result, IDisposable[] disposables) InitJob(int[,] map,
-        Vector2Int[] startPos,
-        Vector2Int[] endPos)
-    {
-        var width = map.GetLength(0);
-        var height = map.GetLength(1);
-        var nodeMap = new NativeArray<MapNode>(width * height, Allocator.TempJob);
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                nodeMap[x * height + y] = new MapNode(x, y, map[x, y] != 1);
-            }
-        }
-
-        NativeQueue<MapNode> openQueue = new NativeQueue<MapNode>(Allocator.TempJob);
-        var result = new NativeList<int2>(Allocator.TempJob);
+        var resultIndex = new NativeArray<int>(startPos.Length, Allocator.TempJob);
 
         var startPosArray = new NativeArray<int2>(startPos.Length, Allocator.TempJob);
         for (int i = 0; i < startPos.Length; i++)
@@ -117,12 +48,13 @@ public class YuoAStarSearchJobs
             Min = new MapNode(int.MaxValue, int.MaxValue, false),
             OpenQueue = openQueue,
             Result = result,
+            ResultIndex = resultIndex,
             NodeMap = nodeMap,
             MapSizeX = map.GetLength(0),
             MapSizeY = map.GetLength(1),
             SearchIndex = 0,
         };
-        return (job, result, new IDisposable[] { startPosArray, endPosArray, nodeMap, openQueue, result });
+        return (job, result, resultIndex, new IDisposable[] { startPosArray, endPosArray, nodeMap, openQueue, result });
     }
 }
 
@@ -172,7 +104,7 @@ public struct MapNode : IEquatable<MapNode>, IComparable<MapNode>
         Parent = new(int.MinValue, int.MinValue);
     }
 
-    public void OpenGrid(MapNode parent, int2 target)
+    public void OpenNode(MapNode parent, int2 target)
     {
         Parent = parent.Pos;
         int wi = Math.Abs(Pos.x - parent.Pos.x);
@@ -192,7 +124,6 @@ public struct MapNode : IEquatable<MapNode>, IComparable<MapNode>
 [BurstCompile]
 public struct AStarSearchJob : IJob
 {
-    public NativeList<int2> Result;
     public NativeArray<MapNode> NodeMap;
     public int MapSizeX;
     public int MapSizeY;
@@ -200,7 +131,8 @@ public struct AStarSearchJob : IJob
     public NativeArray<int2> StartPosArray;
     public NativeArray<int2> EndPosArray;
     public MapNode Min;
-
+    public NativeList<int2> Result;
+    public NativeArray<int> ResultIndex;
     public int SearchIndex;
     int2 StartPos => StartPosArray[SearchIndex];
     int2 EndPos => EndPosArray[SearchIndex];
@@ -212,7 +144,6 @@ public struct AStarSearchJob : IJob
             ExecuteIndex(SearchIndex++);
             ResetMap();
         }
-        // Debug.LogError($"AStar运行失败,总共计算{MapSizeX * MapSizeY * 100 - maxSearchNum}次");
     }
 
     void ExecuteIndex(int index)
@@ -247,13 +178,17 @@ public struct AStarSearchJob : IJob
 
     void SetResult()
     {
-        Result.Clear();
+        NativeList<int2> path = new NativeList<int2>(Allocator.Temp);
         var pos = EndPos;
         while (!pos.Equals(StartPos))
         {
-            Result.Add(pos);
+            path.Add(pos);
             pos = GetNode(pos).Parent;
         }
+
+        Result.AddRange(path);
+        ResultIndex[SearchIndex] = path.Length;
+        path.Dispose();
     }
 
     void ResetMap()
@@ -304,7 +239,7 @@ public struct AStarSearchJob : IJob
             OpenQueue.Enqueue(node);
         }
 
-        if (hasParent) node.OpenGrid(parent, EndPos);
+        if (hasParent) node.OpenNode(parent, EndPos);
         node.Open = true;
         node.Close = false;
         if (node.F < Min.F)

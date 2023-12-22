@@ -386,6 +386,8 @@ MonoBehaviour:
   TableCollection: {fileID: 0}
   target: {fileID: 0}
   TextPath: 
+  num1: 48675
+  num2: 0.546849871685464987654895641
 --- !u!4 &484040883
 Transform:
   m_ObjectHideFlags: 0
@@ -533,8 +535,8 @@ MonoBehaviour:
   Pointer2: {x: 0, y: 0}
   DrawTool: {fileID: 1101676756}
   ImagePrefab: {fileID: 1333149412}
-  Num: 100
-  JobNum: 10000
+  Num: 32
+  JobNum: 1000
 --- !u!1001 &513911002
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1652,11 +1654,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5837368898305968180, guid: c32799d077987714090f4df33014f39d, type: 3}
       propertyPath: m_Value
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5837368898305968180, guid: c32799d077987714090f4df33014f39d, type: 3}
       propertyPath: m_MaxValue
-      value: 100
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 5837368898305968180, guid: c32799d077987714090f4df33014f39d, type: 3}
       propertyPath: m_WholeNumbers
@@ -1930,11 +1932,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5837368898305968180, guid: c32799d077987714090f4df33014f39d, type: 3}
       propertyPath: m_Value
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5837368898305968180, guid: c32799d077987714090f4df33014f39d, type: 3}
       propertyPath: m_MaxValue
-      value: 100
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 5837368898305968180, guid: c32799d077987714090f4df33014f39d, type: 3}
       propertyPath: m_WholeNumbers

@@ -21,6 +21,9 @@ scopes = {
 	"last_search.45F3178B" = ""
 	"OpenInspectorPreview.45F3178B" = "0"
 	"currentGroup.45F3178B" = "all"
+	"last_search.310DEAA3" = ""
+	"OpenInspectorPreview.310DEAA3" = "0"
+	"currentGroup.310DEAA3" = "all"
 }
 providers = {
 	find = {
@@ -76,6 +79,11 @@ providers = {
 	at = {
 		active = true
 		priority = 100
+		defaultAction = null
+	}
+	dep = {
+		active = false
+		priority = 31
 		defaultAction = null
 	}
 }
